@@ -1,0 +1,6 @@
+<option value="">Select Version</option>
+{% for version in versions %}
+  <option value="{{ version.version_number }}">
+    Version {{ version.version_number }} - Created at {{ version.created_at }}
+  </option>
+{% endfor %}

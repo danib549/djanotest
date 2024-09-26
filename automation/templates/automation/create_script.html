@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon and Apple Icon -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <!-- CSS Files -->
+    <script src="{% static 'js/htmx.min.js' %}"></script>
+    <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
+    
+
+</head>
+<body class="g-sidenav-show bg-gray-100">
+
+{% include 'partials/nav_bar.html' %}
+
+<main class="main-content position-relative  h-100 border-radius-lg ps ps--active-y">
+    <!--    test-->
+
+    <!--    test-->
+        <br>
+<!--    <h1>Create Script</h1>-->
+    {% include 'partials/form_partial.html' %}
+    <h2>Steps</h2>
+    <div id="script-list">
+        {% include 'partials/step_list.html' %}
+    </div>
+</main>
+<!-- Core JS Files -->
+<script src="{% static 'js/core/popper.min.js' %}"></script>
+<script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+
+
+<!-- Plugin JS Files -->
+<script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+<script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+<script src="{% static 'js/plugins/dragula/dragula.min.js' %}"></script>
+<script src="{% static 'js/plugins/jkanban/jkanban.js' %}"></script>
+<script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+<script src="{% static 'js/plugins/choices.min.js' %}"></script>
+
+<script src="{% static 'js/soft-ui-dashboard.min.js'  %}"></script>
+    <!-- script for new choices drop downs -->
+    <script>
+        const choicesInstances = {};
+        document.addEventListener('DOMContentLoaded', function () {
+    // Store Choices instances
+    
+        // List of element IDs from forms.py that you want to initialize with Choices.js
+        const selectElementIds = [
+            'id_environment',
+            'id_command',
+            'id_sub_command',
+            'id_component',
+            'id_packet',
+            'id_parameters',
+            'id_operator',
+            'id_value_manipulation',
+            'id_resolution',
+            'id_value_tolerance',
+            'id_time_tolerance',
+
+        ];
+    
+        // Loop through each ID and initialize Choices.js if the element exists and is not already initialized
+        selectElementIds.forEach(function (id) {
+            const element = document.getElementById(id);
+            if (element && !choicesInstances[id]) {
+                choicesInstances[id] = new Choices(element);
+            }
+        });
+    });
+    
+    function updateSelectValue(id, value) {
+        if (choicesInstances[id]) {
+            choicesInstances[id].setChoiceByValue(value || '');
+        }
+    }
+    
+
+    </script>
+
+<script>
+    
+    function updateFormMode(isEditMode) {
+        const actionButton = document.getElementById('action-button');
+
+        if (isEditMode) {
+            // Change to Edit mode
+            actionButton.innerText = 'Edit Step';
+            actionButton.setAttribute('hx-post', '/edit_step/');  // Set the correct URL for editing
+            console.log('Switched to Edit Mode');
+        } else {
+            // Change to Add mode
+            actionButton.innerText = 'Add Step';
+            actionButton.setAttribute('hx-post', '/create_script/');  // Reset to the default URL for adding
+            console.log('Switched to Add Mode');
+            toggleValueManipulationFields();
+        }
+        toggleMoveButtons(isEditMode);
+
+    }
+
+    function toggleMoveButtons(isEditMode) {
+        const moveUpButtons = document.querySelectorAll('.move-up-button');
+        const moveDownButtons = document.querySelectorAll('.move-down-button');
+
+        moveUpButtons.forEach(button => button.disabled = isEditMode);
+        moveDownButtons.forEach(button => button.disabled = isEditMode);
+    }
+
+
+    function loadStepData(stepId) {
+        console.log('Loading step data for step ID:', stepId);
+
+        fetch(`/load_step/${stepId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    console.error('Error loading step:', data.error);
+                } else {
+                    // Populate form fields with the data
+                    document.getElementById('id_step_id').value = data.step_id || '';
+                    updateSelectValue('id_environment', data.environment);
+                    updateSelectValue('id_command', data.environment);
+                    updateSelectValue('id_sub_command', data.sub_command);
+                    updateSelectValue('id_component', data.component);
+                    updateSelectValue('id_packet', data.packet);
+                    updateSelectValue('id_parameters', data.parameters);
+                    updateSelectValue('id_operator', data.operator);
+                    updateSelectValue('id_value_manipulation', data.value_manipulation);
+                    updateSelectValue('id_resolution', data.resolution);
+                    updateSelectValue('id_value_tolerance', data.value_tolerance);
+                    updateSelectValue('id_time_tolerance', data.time_tolerance);
+                    {#choicesEnvironment.setChoiceByValue(data.environment || '');#}
+                    document.getElementById('id_environment').value = data.environment || '';
+                    document.getElementById('id_command').value = data.command || '';
+                    document.getElementById('id_sub_command').value = data.sub_command || '';
+                    document.getElementById('id_component').value = data.component || '';
+                    document.getElementById('id_packet').value = data.packet || '';
+                    document.getElementById('id_parameters').value = data.parameters || '';
+                    document.getElementById('id_value_manipulation').value = data.value_manipulation || '';
+                    document.getElementById('id_fixed_value').value = data.fixed_value || '';
+                    document.getElementById('id_min_value').value = data.min_value || '';
+                    document.getElementById('id_max_value').value = data.max_value || '';
+                    document.getElementById('id_resolution').value = data.resolution || '';
+                    document.getElementById('id_resolution_value').value = data.resolution_value || '';
+                    document.getElementById('id_enum_value').value = data.enum_value || '';
+                    document.getElementById('id_at_time').value = data.at_time || '';
+                    document.getElementById('id_delay').value = data.delay || '';
+                    document.getElementById('id_value_tolerance').value = data.value_tolerance || '';
+                    document.getElementById('id_value_tolerance_value').value = data.value_tolerance_value || '';
+                    document.getElementById('id_time_tolerance').value = data.time_tolerance || '';
+                    document.getElementById('id_time_tolerance_value').value = data.time_tolerance_value || '';
+                    document.getElementById('id_description').value = data.description || '';
+
+                    // Update checkboxes for frame errors
+                    document.getElementById('id_sync').checked = data.frame_errors.sync || false;
+                    document.getElementById('id_length_plus').checked = data.frame_errors.length_plus || false;
+                    document.getElementById('id_length_minus').checked = data.frame_errors.length_minus || false;
+                    document.getElementById('id_sequence_number').checked = data.frame_errors.sequence_number || false;
+                    document.getElementById('id_checksum').checked = data.frame_errors.checksum || false;
+
+                    console.log('Form fields populated with step data:', data);
+                    toggleValueManipulationFields();
+                    // Switch to edit mode
+                    updateFormMode(true);
+                }
+            })
+            .catch(err => console.error('Error fetching step data:', err));
+    }
+
+    // Function to reset form after editing is complete
+    function resetForm() {
+        console.log('Resetting form to Add Step mode');
+        document.getElementById('script-form').reset();  // Reset all form fields
+        document.getElementById('id_step_id').value = '';  // Ensure step_id is cleared
+        updateFormMode(false);  // Reset the button back to "Add Step"
+    }
+
+    document.addEventListener('htmx:beforeOnLoad', function (event) {
+        const stepIdField = document.getElementById('id_step_id');
+        const isEditMode = stepIdField && stepIdField.value !== "";
+
+        if (isEditMode) {
+            console.log('Edit mode. Resetting form after submission.');
+            resetForm();
+        } else {
+            console.log('Not in edit mode. No reset required.');
+        }
+        syncScrollContainers();
+    });
+</script>
+
+<script>
+
+
+    let scrollableContainers = [];
+
+function syncScrollContainers() {
+    // Clear existing event listeners and containers array
+    scrollableContainers.forEach(container => {
+        container.removeEventListener('scroll', handleScroll);
+    });
+
+    // Get all scrollable containers and store them in an array
+    scrollableContainers = Array.from(document.querySelectorAll('.table'));
+
+    // Attach a single event listener to all containers
+    scrollableContainers.forEach(function (container) {
+        container.addEventListener('scroll', handleScroll);
+    });
+}
+
+// Event handler to synchronize scroll position
+function handleScroll(event) {
+    const scrolledContainer = event.target;
+
+    scrollableContainers.forEach(function (container) {
+        if (container !== scrolledContainer) {
+            container.scrollLeft = scrolledContainer.scrollLeft;
+        }
+    });
+}
+
+// Call the function initially to set up scroll sync for existing containers
+syncScrollContainers();
+
+</script>
+<script>
+
+    function toggleValueManipulationFields() {
+        const manipulationType = document.getElementById('id_value_manipulation').value;
+        const minValueField = document.getElementById('id_min_value').parentElement;
+        const maxValueField = document.getElementById('id_max_value').parentElement;
+        const resolutionField = document.getElementById('id_resolution').parentElement;
+        const resolutionValueField = document.getElementById('id_resolution_value').parentElement;
+        const fixedValueField = document.getElementById('id_fixed_value').parentElement;
+        const enumValueField = document.getElementById('id_enum_value').parentElement;
+
+        minValueField.style.display = 'none';
+        maxValueField.style.display = 'none';
+        resolutionField.style.display = 'none';
+        resolutionValueField.style.display = 'none';
+        fixedValueField.style.display = 'none';
+        enumValueField.style.display = 'none';
+
+        if (manipulationType === 'random') {
+            minValueField.style.display = 'block';
+            maxValueField.style.display = 'block';
+            resolutionField.style.display = 'block';
+            resolutionValueField.style.display = 'block';
+        } else if (manipulationType === 'fixed') {
+            fixedValueField.style.display = 'block';
+        } else if (manipulationType === 'enum') {
+            enumValueField.style.display = 'block';
+        }
+    }
+
+    document.getElementById('id_value_manipulation').addEventListener('change', toggleValueManipulationFields);
+    toggleValueManipulationFields();
+</script>
+
+</body>
+</html>

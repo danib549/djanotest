@@ -1,0 +1,58 @@
+/* styles.css */
+
+/* General layout */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+/* Step container styling */
+#step-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Individual step styling */
+.step {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Step title */
+.step-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* List of details for each step */
+.step-details {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.step-details li {
+    margin: 8px 0;
+    color: #666;
+}
+
+/* Delete button styling */
+.delete-button {
+    background-color: #ff4c4c;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-button:hover {
+    background-color: #e43a3a;
+}

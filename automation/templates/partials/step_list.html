@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collapsible Table Columns</title>
+
+</head>
+<body>
+<div id="step-list" hx-trigger="refresh from:body">
+    {% for step in session_script %}
+        <div class="step" id="step-{{ step.step_id }}">
+
+
+        <div class="card">
+        <div class="table-responsive">
+            <p>Step {{ step.step_id }}</p>
+            <!-- Buttons to collapse/expand columns -->
+            <div class="step-controls">
+                {#                <button onclick="toggleColumns(1)">Toggle Command</button>#}
+                {#                <button onclick="toggleColumns(2)">Toggle Value</button>#}
+                {#                <button onclick="toggleColumns(3)">Toggle value options</button>#}
+                {#                <button onclick="toggleColumns(4)">Toggle Timing & Erros</button>#}
+                <div class="right-buttons">
+                    <button type="button" class="move-up-button"
+                            hx-post="{% url 'update_step_order' %}"
+                            hx-vals='{"step_id": "{{ step.step_id }}", "direction": "up", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                            hx-target="#step-list"
+                            hx-swap="outerHTML"
+                            {% if forloop.first %}disabled{% endif %}>Move Up
+                    </button>
+
+                    <button type="button" class="move-down-button"
+                            hx-post="{% url 'update_step_order' %}"
+                            hx-vals='{"step_id": "{{ step.step_id }}", "direction": "down", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                            hx-target="#step-list"
+                            hx-swap="outerHTML"
+                            {% if forloop.last %}disabled{% endif %}>Move Down
+                    </button>
+
+                    <button type="button" onclick="loadStepData({{ step.step_id }})">Edit</button>
+                    <!-- Delete Button -->
+                    <button type="button" class="delete-button"
+                            hx-post="{% url 'delete_step' step.step_id %}"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-target="#step-list"
+                            hx-swap="outerHTML">Delete
+                    </button>
+                </div>
+            </div>
+            <table class="table step-details">
+                <thead>
+                <tr>
+                    <th class="group-1">Environment</th>
+                    <th class="group-1">Command</th>
+                    <th class="group-1">Sub Command</th>
+                    <th class="group-1">Component</th>
+                    <th class="group-1">Packet</th>
+                    <th class="group-2">Parameters</th>
+                    <th class="group-2">Operators</th>
+                    <th class="group-2">Value Manipulation</th>
+                    <th class="group-2">Fixed Value</th>
+                    <th class="group-3">Min Value</th>
+                    <th class="group-3">Max Value</th>
+                    <th class="group-3">Resolution</th>
+                    <th class="group-3">Resolution Value</th>
+                    <th class="group-4">Enum Value</th>
+                    <th class="group-4">At Time</th>
+                    <th class="group-4">Delay</th>
+                    <th class="group-4">Sync</th>
+                    <th class="group-5">Length Plus</th>
+                    <th class="group-5">Length Minus</th>
+                    <th class="group-5">Sequence Number</th>
+                    <th class="group-5">Checksum</th>
+                    <th class="group-6">Value Tolerance</th>
+                    <th class="group-6">Value Tolerance Value</th>
+                    <th class="group-6">Time Tolerance</th>
+                    <th class="group-6">Time Tolerance Value</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="group-1">{{ step.environment }}</td>
+                    <td class="group-1">{{ step.command }}</td>
+                    <td class="group-1">{{ step.sub_command }}</td>
+                    <td class="group-1">{{ step.component }}</td>
+                    <td class="group-2">{{ step.packet }}</td>
+                    <td class="group-2">{{ step.parameters }}</td>
+                    <td class="group-2">{{ step.operator }}</td>
+                    <td class="group-2">{{ step.value_manipulation }}</td>
+                    <td class="group-2">{{ step.fixed_value }}</td>
+                    <td class="group-3">{{ step.min_value }}</td>
+                    <td class="group-3">{{ step.max_value }}</td>
+                    <td class="group-3">{{ step.resolution }}</td>
+                    <td class="group-3">{{ step.resolution_value }}</td>
+                    <td class="group-4">{{ step.enum_value }}</td>
+                    <td class="group-4">{{ step.at_time }}</td>
+                    <td class="group-4">{{ step.delay }}</td>
+                    <td class="group-4">{{ step.frame_errors.sync }}</td>
+                    <td class="group-5">{{ step.frame_errors.length_plus }}</td>
+                    <td class="group-5">{{ step.frame_errors.length_minus }}</td>
+                    <td class="group-5">{{ step.frame_errors.sequence_number }}</td>
+                    <td class="group-5">{{ step.frame_errors.checksum }}</td>
+                    <td class="group-6">{{ step.value_tolerance }}</td>
+                    <td class="group-6">{{ step.value_tolerance_value }}</td>
+                    <td class="group-6">{{ step.time_tolerance }}</td>
+                    <td class="group-6">{{ step.time_tolerance_value }}</td>
+                    <td>{{ step.description }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+    </div>
+    </div>
+</div>
+<style>
+    .step-controls {
+        display: flex;
+        justify-content: space-between; /* Spread space between left and right sections */
+        align-items: center;
+        margin-bottom: 10px; /* Adjust margin as needed */
+    }
+
+    .right-buttons {
+        display: flex;
+        gap: 10px; /* Space between buttons */
+    }
+</style>
+<script>
+    // Function to toggle the visibility of a group of columns
+    function toggleColumns(group) {
+        var elements = document.querySelectorAll('.group-' + group);
+        elements.forEach(function (el) {
+            el.style.display = (el.style.display === 'none') ? 'table-cell' : 'none';
+        });
+    }
+
+    toggleColumns(1);
+    toggleColumns(2);
+    toggleColumns(3);
+    toggleColumns(4);
+
+
+</script>

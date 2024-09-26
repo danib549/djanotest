@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="HttpClientEndpointsTabState">
+    <option name="requestToText" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;f547a0bbcb3ca21f50e9075269fec08fbd48d1f5&quot; value=&quot;###&amp;#10;GET http://localhost:8000/login/&quot; /&gt;&#10;  &lt;entry key=&quot;03c9a6f28166f58ebd5c72f1574579567188e8e4&quot; value=&quot;###&amp;#10;GET http://localhost:8000/load_script/&quot; /&gt;&#10;  &lt;entry key=&quot;5df2785d56dc4801ecddb9ac4e12e5828a15b59f&quot; value=&quot;###&amp;#10;GET http://localhost:8000/admin/&quot; /&gt;&#10;  &lt;entry key=&quot;50cf43e3f348588bcf6afad3e84753567e1a7516&quot; value=&quot;###&amp;#10;GET http://localhost:8000/scripts/&quot; /&gt;&#10;  &lt;entry key=&quot;3bb6b022f601d48243d66a0a40c49a26fdf2092d&quot; value=&quot;###&amp;#10;GET http://localhost:8000/create_script/&quot; /&gt;&#10;  &lt;entry key=&quot;db969fe2f2e8915a5dd6b92b44ba45865b997807&quot; value=&quot;###&amp;#10;GET http://localhost:8000/global_settings/&quot; /&gt;&#10;  &lt;entry key=&quot;338e16fc88cfc7d4e79d09d4d62f812d2ec3ae30&quot; value=&quot;###&amp;#10;GET http://localhost:8000/logout/&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
+  </component>
+</project>

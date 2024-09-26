@@ -1,0 +1,74 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+    {#    <link rel="stylesheet" href="{% static 'automation/style.css' %}">#}
+</head>
+{% block content %}
+    <h2>Your Scripts</h2>
+
+    <!-- Project Selection Dropdown -->
+    <form method="get" action="{% url 'script_list' %}">
+        <label for="project-select">Filter by Project:</label>
+        <select id="project-select" name="project_id" onchange="this.form.submit()">
+            <option value="" {% if not selected_project_id %}selected{% else %}disabled{% endif %}>
+                Choose Project
+            </option>
+
+            {% for project in projects %}
+                <option value="{{ project.id }}"
+                        {% if project.id|stringformat:"s" == selected_project_id %}selected{% endif %}>
+                    {{ project.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- List of Scripts -->
+    <form method="post" action="{% url 'load_script' %}" id="script-form">
+        {% csrf_token %}
+        <ul>
+            {% for script in scripts %}
+                <li>
+                    <input type="radio" id="script_{{ script.id }}" name="script_id" value="{{ script.id }}"
+                           hx-get="{% url 'get_script_versions' %}?script_id={{ script.id }}"
+                           hx-target="#version-select" hx-swap="innerHTML" hx-trigger="click">
+                    <label for="script_{{ script.id }}">{{ script.test_name }} - {{ script.created_at }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Dropdown for script versions (loaded dynamically via HTMX) -->
+        <label for="version-select">Select Version:</label>
+        <select id="version-select" name="version_id" disabled hx-on="htmx:afterRequest">
+            <option value="">Select Version</option>
+        </select>
+
+        <button type="submit">Load Selected Script</button>
+    </form>
+
+    <!-- JavaScript to enable the dropdown after HTMX loads the content -->
+    <script>
+        document.addEventListener("htmx:afterRequest", function () {
+            const versionSelect = document.getElementById("version-select");
+            if (versionSelect) {
+                versionSelect.disabled = false;  // Enable the dropdown after the content is loaded
+            }
+        });
+        
+    </script>
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+
+
+    <!-- Plugin JS Files -->
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/dragula/dragula.min.js' %}"></script>
+    <script src="{% static 'js/plugins/jkanban/jkanban.js' %}"></script>
+    <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+    <script src="{% static 'js/plugins/choices.min.js' %}"></script>
+
+    <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
+{% endblock %}

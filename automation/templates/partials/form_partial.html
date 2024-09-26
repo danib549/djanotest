@@ -1,0 +1,457 @@
+<!-- form_partial.html -->
+
+{% load custom_filters %}
+{% load static %}
+<form method="POST" id="script-form">
+    {% csrf_token %}
+    <form method="POST" id="script-form">
+        {% csrf_token %}
+{#        <div class="row">#}
+            <h3>Test Creation</h3>
+            <div class="card-group" style="padding: 10px 20px;">
+                <div class="card" style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+
+                    <div class="card-body   pt-2">
+
+                        <h3>Command </h3>
+
+                        <div>
+                            <label for="{{ form.environment.id_for_label }}">{{ form.environment.label }}</label>
+                            {{ form.environment|add_class:"form-control" }}
+                            {{ form.environment.errors }}
+                        </div>
+
+                        <!-- Command Field -->
+                        <div>
+                            <label for="{{ form.command.id_for_label }}">{{ form.command.label }}</label>
+                            {{ form.command|add_class:"form-control" }}
+                            {{ form.command.errors }}
+                        </div>
+
+                        <!-- Sub Command Field -->
+                        <div>
+                            <label for="{{ form.sub_command.id_for_label }}">{{ form.sub_command.label }}</label>
+                            {{ form.sub_command|add_class:"form-control" }}
+                            {{ form.sub_command.errors }}
+                        </div>
+
+                        <!-- Component Field -->
+                        <div>
+                            <label for="{{ form.component.id_for_label }}">{{ form.component.label }}</label>
+                            {{ form.component|add_class:"form-control" }}
+                            {{ form.component.errors }}
+                        </div>
+
+                        <!-- Packet Field -->
+                        <div>
+                            <label for="{{ form.packet.id_for_label }}">{{ form.packet.label }}</label>
+                            {{ form.packet|add_class:"form-control" }}
+                            {{ form.packet.errors }}
+                        </div>
+                        {{ form.step_id }}
+                        <br>
+                        <br>
+                    </div>
+                </div>
+{#            </div>#}
+{#            <div class="col">#}
+                <div class="card" style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+                    <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                        <h3>Value </h3>
+                    </div>
+                    <div class="card-body pt-2">
+                        <div>
+                            <label for="{{ form.parameters.id_for_label }}">{{ form.parameters.label }}</label>
+                            {{ form.parameters|add_class:"form-control" }}
+                            {{ form.parameters.errors }}
+                        </div>
+
+                        <!-- Operator Field -->
+                        <div>
+                            <label for="{{ form.operator.id_for_label }}">{{ form.operator.label }}</label>
+                            {{ form.operator|add_class:"form-control" }}
+                            {{ form.operator.errors }}
+                        </div>
+
+                        <!-- Value Manipulation Field -->
+                        <div>
+                            <label for="{{ form.value_manipulation.id_for_label }}">{{ form.value_manipulation.label }}</label>
+                            {{ form.value_manipulation|add_class:"form-control" }}
+                            {{ form.value_manipulation.errors }}
+                        </div>
+                        <br>
+                        <hr class="horizontal dark mt-0">
+                        <!-- Fixed Value Field -->
+                        <div>
+                            <label for="{{ form.fixed_value.id_for_label }}">{{ form.fixed_value.label }}</label>
+                            {{ form.fixed_value|add_class:"form-control" }}
+                            {{ form.fixed_value.errors }}
+                        </div>
+
+                        <!-- Min Value Field -->
+                        <div>
+                            <label for="{{ form.min_value.id_for_label }}">{{ form.min_value.label }}</label>
+                            {{ form.min_value|add_class:"form-control" }}
+                            {{ form.min_value.errors }}
+                        </div>
+
+                        <!-- Max Value Field -->
+                        <div>
+                            <label for="{{ form.max_value.id_for_label }}">{{ form.max_value.label }}</label>
+                            {{ form.max_value|add_class:"form-control" }}
+                            {{ form.max_value.errors }}
+                        </div>
+
+                        <!-- Resolution Type Field -->
+                        <div>
+                            <label for="{{ form.resolution.id_for_label }}">{{ form.resolution.label }}</label>
+                            {{ form.resolution|add_class:"form-control" }}
+                            {{ form.resolution.errors }}
+                        </div>
+
+                        <!-- Resolution Value Field -->
+                        <div>
+                            <label for="{{ form.resolution_value.id_for_label }}">{{ form.resolution_value.label }}</label>
+                            {{ form.resolution_value|add_class:"form-control" }}
+                            {{ form.resolution_value.errors }}
+                        </div>
+
+                        <!-- Enum Value Field -->
+                        <div>
+                            <label for="{{ form.enum_value.id_for_label }}">{{ form.enum_value.label }}</label>
+                            {{ form.enum_value|add_class:"form-control" }}
+                            {{ form.enum_value.errors }}
+                        </div>
+
+                    </div>
+                </div>
+{#            </div>#}
+{#            <div class="col">#}
+
+{#            </div>#}
+{#            <div class="col">#}
+                <div class="card" style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+                    <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                        <h3>Value options</h3>
+                    </div>
+
+                    <div class="card-body pt-2 ">
+
+                        <div>
+                            <label for="{{ form.value_tolerance.id_for_label }}">{{ form.value_tolerance.label }}</label>
+                            {{ form.value_tolerance|add_class:"form-control" }}
+                            {{ form.value_tolerance.errors }}
+                        </div>
+
+                        <!-- Value Tolerance Value Field -->
+                        <div>
+                            <label for="{{ form.value_tolerance_value.id_for_label }}">{{ form.value_tolerance_value.label }}</label>
+                            {{ form.value_tolerance_value|add_class:"form-control" }}
+                            {{ form.value_tolerance_value.errors }}
+                        </div>
+
+                        <!-- Time Tolerance Field -->
+                        <div>
+                            <label for="{{ form.time_tolerance.id_for_label }}">{{ form.time_tolerance.label }}</label>
+                            {{ form.time_tolerance|add_class:"form-control" }}
+                            {{ form.time_tolerance.errors }}
+                        </div>
+
+                        <!-- Time Tolerance Value Field -->
+                        <div>
+                            <label for="{{ form.time_tolerance_value.id_for_label }}">{{ form.time_tolerance_value.label }}</label>
+                            {{ form.time_tolerance_value|add_class:"form-control" }}
+                            {{ form.time_tolerance_value.errors }}
+                        </div>
+
+
+                    </div>
+                </div>
+                 <div class="card" style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;border-bottom-right-radius: 0rem;border-top-right-radius: 0rem;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+                    <div class="card-body pt-2">
+                        <h3>Timing & Erros</h3>
+                        <div>
+                            <label for="{{ form.at_time.id_for_label }}">{{ form.at_time.label }}</label>
+                            {{ form.at_time|add_class:"form-control" }}
+                            {{ form.at_time.errors }}
+                        </div>
+
+                        <!-- Delay Field -->
+                        <div>
+                            <label for="{{ form.delay.id_for_label }}">{{ form.delay.label }}</label>
+                            {{ form.delay|add_class:"form-control" }}
+                            {{ form.delay.errors }}
+                        </div>
+                        <br>
+                        <hr class="horizontal dark mt-0">
+                        <p>Frame Errors</p>
+                        <!-- Sync Field -->
+                        <div class="form-check form-switch">
+                            <label for="{{ form.sync.id_for_label }}">{{ form.sync.label }}</label>
+                            {{ form.sync|add_class:"form-check-input" }}
+                            {{ form.sync.errors }}
+                        </div>
+
+                        <!-- Length Plus Field -->
+                        <div class="form-check form-switch">
+                            <label for="{{ form.length_plus.id_for_label }}">{{ form.length_plus.label }}</label>
+                            {{ form.length_plus|add_class:"form-check-input" }}
+                            {{ form.length_plus.errors }}
+                        </div>
+
+                        <!-- Length Minus Field -->
+                        <div class="form-check form-switch">
+                            <label for="{{ form.length_minus.id_for_label }}">{{ form.length_minus.label }}</label>
+                            {{ form.length_minus|add_class:"form-check-input" }}
+                            {{ form.length_minus.errors }}
+                        </div>
+
+                        <!-- Sequence Number Field -->
+                        <div class="form-check form-switch">
+                            <label for="{{ form.sequence_number.id_for_label }}">{{ form.sequence_number.label }}</label>
+                            {{ form.sequence_number|add_class:"form-check-input" }}
+                            {{ form.sequence_number.errors }}
+                        </div>
+
+                        <!-- Checksum Field -->
+                        <div class="form-check form-switch">
+                            <label for="{{ form.checksum.id_for_label }}">{{ form.checksum.label }}</label>
+                            {{ form.checksum|add_class:"form-check-input" }}
+                            {{ form.checksum.errors }}
+                        </div>
+
+                        <!-- Value Tolerance Field -->
+
+                        <div class="author align-items-center">
+                        </div>
+                    </div>
+                </div>
+{#            </div>#}
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card  card-plain  ">
+                    <div class="card-body " style="padding-top: 0px ">
+                        <div >
+                            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                                        {{ form.description|add_class:"form-control" }}
+                                        {{ form.description.errors }}
+                        </div>
+                        <br>
+                        <button id="action-button" hx-post="{% url 'create_script' %}" hx-target="#script-list"
+                                hx-replace="outerHTML"
+                                type="submit" class="btn btn-primary btn-lg">Add Step
+                        </button>
+                        <button name="action" value="save" type="submit" class="btn btn-secondary btn-lg">Save Script</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col  ">
+                <div class="card card-plain">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+{#    <form method="POST" id="script-form">#}
+{#        {% csrf_token %}#}
+{#        <!-- Environment Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.environment.id_for_label }}">{{ form.environment.label }}</label>#}
+{#            {{ form.environment }}#}
+{#            {{ form.environment.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Command Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.command.id_for_label }}">{{ form.command.label }}</label>#}
+{#            {{ form.command }}#}
+{#            {{ form.command.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Sub Command Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.sub_command.id_for_label }}">{{ form.sub_command.label }}</label>#}
+{#            {{ form.sub_command }}#}
+{#            {{ form.sub_command.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Component Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.component.id_for_label }}">{{ form.component.label }}</label>#}
+{#            {{ form.component }}#}
+{#            {{ form.component.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Packet Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.packet.id_for_label }}">{{ form.packet.label }}</label>#}
+{#            {{ form.packet }}#}
+{#            {{ form.packet.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Parameters Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.parameters.id_for_label }}">{{ form.parameters.label }}</label>#}
+{#            {{ form.parameters }}#}
+{#            {{ form.parameters.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Operator Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.operator.id_for_label }}">{{ form.operator.label }}</label>#}
+{#            {{ form.operator }}#}
+{#            {{ form.operator.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Value Manipulation Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.value_manipulation.id_for_label }}">{{ form.value_manipulation.label }}</label>#}
+{#            {{ form.value_manipulation }}#}
+{#            {{ form.value_manipulation.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Fixed Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.fixed_value.id_for_label }}">{{ form.fixed_value.label }}</label>#}
+{#            {{ form.fixed_value }}#}
+{#            {{ form.fixed_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Min Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.min_value.id_for_label }}">{{ form.min_value.label }}</label>#}
+{#            {{ form.min_value }}#}
+{#            {{ form.min_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Max Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.max_value.id_for_label }}">{{ form.max_value.label }}</label>#}
+{#            {{ form.max_value }}#}
+{#            {{ form.max_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Resolution Type Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.resolution.id_for_label }}">{{ form.resolution.label }}</label>#}
+{#            {{ form.resolution }}#}
+{#            {{ form.resolution.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Resolution Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.resolution_value.id_for_label }}">{{ form.resolution_value.label }}</label>#}
+{#            {{ form.resolution_value }}#}
+{#            {{ form.resolution_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Enum Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.enum_value.id_for_label }}">{{ form.enum_value.label }}</label>#}
+{#            {{ form.enum_value }}#}
+{#            {{ form.enum_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Step ID Field (Hidden) -->#}
+{#        {{ form.step_id }}#}
+{##}
+{#        <!-- At Time Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.at_time.id_for_label }}">{{ form.at_time.label }}</label>#}
+{#            {{ form.at_time }}#}
+{#            {{ form.at_time.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Delay Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.delay.id_for_label }}">{{ form.delay.label }}</label>#}
+{#            {{ form.delay }}#}
+{#            {{ form.delay.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Sync Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.sync.id_for_label }}">{{ form.sync.label }}</label>#}
+{#            {{ form.sync }}#}
+{#            {{ form.sync.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Length Plus Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.length_plus.id_for_label }}">{{ form.length_plus.label }}</label>#}
+{#            {{ form.length_plus }}#}
+{#            {{ form.length_plus.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Length Minus Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.length_minus.id_for_label }}">{{ form.length_minus.label }}</label>#}
+{#            {{ form.length_minus }}#}
+{#            {{ form.length_minus.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Sequence Number Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.sequence_number.id_for_label }}">{{ form.sequence_number.label }}</label>#}
+{#            {{ form.sequence_number }}#}
+{#            {{ form.sequence_number.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Checksum Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.checksum.id_for_label }}">{{ form.checksum.label }}</label>#}
+{#            {{ form.checksum }}#}
+{#            {{ form.checksum.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Value Tolerance Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.value_tolerance.id_for_label }}">{{ form.value_tolerance.label }}</label>#}
+{#            {{ form.value_tolerance }}#}
+{#            {{ form.value_tolerance.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Value Tolerance Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.value_tolerance_value.id_for_label }}">{{ form.value_tolerance_value.label }}</label>#}
+{#            {{ form.value_tolerance_value }}#}
+{#            {{ form.value_tolerance_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Time Tolerance Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.time_tolerance.id_for_label }}">{{ form.time_tolerance.label }}</label>#}
+{#            {{ form.time_tolerance }}#}
+{#            {{ form.time_tolerance.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Time Tolerance Value Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.time_tolerance_value.id_for_label }}">{{ form.time_tolerance_value.label }}</label>#}
+{#            {{ form.time_tolerance_value }}#}
+{#            {{ form.time_tolerance_value.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Description Field -->#}
+{#        <div>#}
+{#            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>#}
+{#            {{ form.description }}#}
+{#            {{ form.description.errors }}#}
+{#        </div>#}
+{##}
+{#        <!-- Add/Edit Button based on whether a step is being edited -->#}
+{##}
+{#        <button id="action-button" hx-post="{% url 'create_script' %}" hx-target="#script-list" hx-replace="outerHTML"#}
+{#                type="submit">Add Step#}
+{#        </button>#}
+{##}
+{#        <!-- Save Script Button -->#}
+{#        <button name="action" value="save" type="submit">Save Script</button>#}
+{#    </form>#}
+
