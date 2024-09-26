@@ -15,41 +15,44 @@
         <div class="card">
         <p>Step {{ step.step_id }}</p>
         <div class="step-controls">
-                {#                <button onclick="toggleColumns(1)">Toggle Command</button>#}
-                {#                <button onclick="toggleColumns(2)">Toggle Value</button>#}
-                {#                <button onclick="toggleColumns(3)">Toggle value options</button>#}
-                {#                <button onclick="toggleColumns(4)">Toggle Timing & Erros</button>#}
-                <div class="right-buttons">
-                    <button type="button" class="move-up-button"
-                            hx-post="{% url 'update_step_order' %}"
-                            hx-vals='{"step_id": "{{ step.step_id }}", "direction": "up", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
-                            hx-target="#step-list"
-                            hx-swap="outerHTML"
-                            {% if forloop.first %}disabled{% endif %}>Move Up
-                    </button>
+            {#                <button onclick="toggleColumns(1)">Toggle Command</button>#}
+            {#                <button onclick="toggleColumns(2)">Toggle Value</button>#}
+            {#                <button onclick="toggleColumns(3)">Toggle value options</button>#}
+            {#                <button onclick="toggleColumns(4)">Toggle Timing & Erros</button>#}
+            <div class="right-buttons">
+                <button type="button" class="move-up-button btn bg-gradient-secondary"
+                        hx-post="{% url 'update_step_order' %}"
+                        hx-vals='{"step_id": "{{ step.step_id }}", "direction": "up", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                        hx-target="#step-list"
+                        hx-swap="outerHTML"
+                        {% if forloop.first %}disabled{% endif %}>Move Up
+                </button>
 
-                    <button type="button" class="move-down-button"
-                            hx-post="{% url 'update_step_order' %}"
-                            hx-vals='{"step_id": "{{ step.step_id }}", "direction": "down", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
-                            hx-target="#step-list"
-                            hx-swap="outerHTML"
-                            {% if forloop.last %}disabled{% endif %}>Move Down
-                    </button>
+                <button type="button" class="move-down-button btn bg-gradient-secondary"
+                        hx-post="{% url 'update_step_order' %}"
+                        hx-vals='{"step_id": "{{ step.step_id }}", "direction": "down", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                        hx-target="#step-list"
+                        hx-swap="outerHTML"
+                        {% if forloop.last %}disabled{% endif %}>Move Down
+                </button>
 
-                    <button type="button" onclick="loadStepData({{ step.step_id }})">Edit</button>
-                    <!-- Delete Button -->
-                    <button type="button" class="delete-button"
-                            hx-post="{% url 'delete_step' step.step_id %}"
-                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-target="#step-list"
-                            hx-swap="outerHTML">Delete
-                    </button>
-                </div>
+
+                <!-- Delete Button -->
+                <button type="button" class="delete-button btn bg-gradient-warning"
+                        hx-post="{% url 'delete_step' step.step_id %}"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        hx-target="#step-list"
+                        hx-swap="outerHTML">Delete
+                </button>
+                <button type="button" class="btn btn-primary bg-gradient-primary"
+                        onclick="loadStepData({{ step.step_id }})">Edit
+                </button>
             </div>
+        </div>
         <div class="table-responsive">
-            
+
             <!-- Buttons to collapse/expand columns -->
-            
+
             <table class="table step-details">
                 <thead>
                 <tr>
@@ -118,19 +121,21 @@
     </div>
 </div>
 <style>
-.step-controls {
-    display: flex;
-    justify-content: flex-end; /* Aligns all buttons to the right */
-    align-items: center;
-    margin-bottom: 10px; /* Adjust margin as needed */
-}
+    .step-controls {
+        display: flex;
+        justify-content: flex-end; /* Aligns all buttons to the right */
+        align-items: center;
+        margin-bottom: 10px; /* Adjust margin as needed */
+    }
 
-.right-buttons {
-    display: flex;
-    gap: 10px; /* Space between buttons */
-}
-{#.group-command, .group-value, .group-valueOptions, .group-timing, .group-5, .group-6 {#}
-{#    display: none;#}
-{#}#}
+    .right-buttons {
+        display: flex;
+        gap: 10px; /* Space between buttons */
+    }
+
+    {#.group-command, .group-value, .group-valueOptions, .group-timing, .group-5, .group-6 {#}
+    {#    display: none;#}
+    {
+    #}#}
 </style>
 

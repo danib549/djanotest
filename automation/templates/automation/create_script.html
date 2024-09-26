@@ -56,12 +56,9 @@
 
 <script src="{% static 'js/soft-ui-dashboard.min.js'  %}"></script>
     <!-- script for new choices drop downs -->
-    <script>
+<script>
         const choicesInstances = {};
         document.addEventListener('DOMContentLoaded', function () {
-    // Store Choices instances
-    
-        // List of element IDs from forms.py that you want to initialize with Choices.js
         const selectElementIds = [
             'id_environment',
             'id_command',
@@ -204,43 +201,12 @@
         } else {
             console.log('Not in edit mode. No reset required.');
         }
-        syncScrollContainers();
+
     });
 </script>
 
 <script>
 
-
-    let scrollableContainers = [];
-
-function syncScrollContainers() {
-    // Clear existing event listeners and containers array
-    scrollableContainers.forEach(container => {
-        container.removeEventListener('scroll', handleScroll);
-    });
-
-    // Get all scrollable containers and store them in an array
-    scrollableContainers = Array.from(document.querySelectorAll('.table'));
-
-    // Attach a single event listener to all containers
-    scrollableContainers.forEach(function (container) {
-        container.addEventListener('scroll', handleScroll);
-    });
-}
-
-// Event handler to synchronize scroll position
-function handleScroll(event) {
-    const scrolledContainer = event.target;
-
-    scrollableContainers.forEach(function (container) {
-        if (container !== scrolledContainer) {
-            container.scrollLeft = scrolledContainer.scrollLeft;
-        }
-    });
-}
-
-// Call the function initially to set up scroll sync for existing containers
-syncScrollContainers();
 
 </script>
 <script>
@@ -277,6 +243,8 @@ syncScrollContainers();
     toggleValueManipulationFields();
 </script>
 <script>
+
+
     // Function to toggle the visibility of a group of columns
     function toggleColumns(group) {
         var elements = document.querySelectorAll('.group-' + group);
@@ -302,10 +270,60 @@ syncScrollContainers();
     }
 
     // Listen for HTMX afterSwap event to trigger the column toggle based on checkboxes
+document.addEventListener('DOMContentLoaded', function() {
+    let scrollableContainers = [];
+    let syncEnabled = true; // Sync is enabled by default
+
+    function syncScrollContainers() {
+        // Clear existing event listeners and containers array
+        scrollableContainers.forEach(container => {
+            container.removeEventListener('scroll', handleScroll);
+        });
+
+        // Get all scrollable containers and store them in an array
+        scrollableContainers = Array.from(document.querySelectorAll('.table-responsive'));
+
+        // Attach a single event listener to all containers if sync is enabled
+        if (syncEnabled) {
+            scrollableContainers.forEach(function (container) {
+                container.addEventListener('scroll', handleScroll);
+            });
+        }
+    }
+
+    // Event handler to synchronize scroll position
+    function handleScroll(event) {
+        if (!syncEnabled) return; // Do nothing if sync is disabled
+
+        const scrolledContainer = event.target;
+        const scrollLeft = scrolledContainer.scrollLeft;
+
+        scrollableContainers.forEach(function (container) {
+            if (container !== scrolledContainer) {
+                container.scrollLeft = scrollLeft;
+            }
+        });
+    }
+
+    // Call the function initially to set up scroll sync for existing containers
+    syncScrollContainers();
+
+    // Listen for htmx:afterSwap event to re-trigger syncScrollContainers
     document.body.addEventListener('htmx:afterSwap', function() {
-        console.log('Restored checkbox states');
+        console.log('Restoring scroll synchronization');
+        syncScrollContainers();
+        // Call other functions like restoreAndToggleColumns if needed
         restoreAndToggleColumns();
     });
+
+    // Toggle scroll sync based on the checkbox
+    const syncToggle = document.getElementById('toggle-sync-scroll');
+    syncToggle.addEventListener('change', function() {
+        syncEnabled = this.checked; // Update sync state based on checkbox
+        syncScrollContainers(); // Re-run to enable/disable sync
+    });
+});
+
 
 </script>
 

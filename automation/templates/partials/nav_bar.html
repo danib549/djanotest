@@ -82,14 +82,24 @@
 
         </ul>
     </div>
+    {% if request.path == '/create_script/' %}
+
     <div class="sidenav-footer ">
 
         <div class="card-background shadow-none card-background-mask-secondary " id="sidenavCard">
             {#            <i class="ni ni-square-pin text-dark text-gradient text-lg top-0" aria-hidden="true" id="sidenavCardIcon"></i>#}
             <div class="card-body text-start p-3 w-100">
                 <ul class="navbar-nav">
-                    <label for="trigger_command" class="hidden-text" style="font-size: 16px;justify-content: space-between; align-items: center;">Show & Collapse  </label>
-                    <br>
+                    <li class="nav-item">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="toggle-sync-scroll" checked>
+
+                            <label for="toggle-sync-scroll" class="form-check-label hidden-text">Sync Scroll</label>
+                        </div>
+                    </li>
+                    <hr class="horizontal dark mt-0">
+                    <label for="trigger_command" class="hidden-text" id="footer_title" style="font-size: 16px;justify-content: space-between; align-items: center;">&nbsp;&nbsp;Show & Collapse  </label>
+{#                    <br>#}
                     <li class="nav-item">
                         <div class="form-check form-switch">
 
@@ -127,6 +137,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </aside>
 
 <script>
@@ -134,6 +145,9 @@
 
 </script>
 <style>
+    .nav-item {
+        margin-bottom: 0 !important;
+    }
     .sidenav-normal {
         font-size: 1rem;
         font-weight: 500;
@@ -157,8 +171,20 @@
     }
 
   /* Initially hide the text */
+        #footer_title {
+        display: inline-block;
+        overflow: hidden; /* Hide overflowing content */
+        white-space: nowrap;
+        width: 17px; /* Show only the first character */
+        transition: width 0.3s ease; /* Smooth width transition */
+    }
+
+    /* When the aside is hovered, expand the label to show full text */
+    #sidenav-main:hover #footer_title {
+        width: auto; /* Expand to fit full text */
+    }
     .hidden-text {
-        opacity: 0;
+        opacity: 1;
         width: 0;
         overflow: hidden;
         white-space: nowrap;
@@ -177,7 +203,7 @@
     #sidenavCard {
 
         background: rgb(246,247,248);
-background: linear-gradient(180deg, rgba(246,247,248,1) 0%, rgba(244,245,246,1) 44%, rgba(227,228,230,1) 100%);
+        background: linear-gradient(180deg, rgba(246,247,248,1) 0%, rgba(244,245,246,1) 80%, rgba(227,228,230,1) 100%);
         url('{% static 'img/curved-images/white-curved.jpg' %}');
         border-top-right-radius: 15px;
         border-top-left-radius: 15px;
