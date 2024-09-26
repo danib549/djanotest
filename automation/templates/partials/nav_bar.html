@@ -88,13 +88,13 @@
             {#            <i class="ni ni-square-pin text-dark text-gradient text-lg top-0" aria-hidden="true" id="sidenavCardIcon"></i>#}
             <div class="card-body text-start p-3 w-100">
                 <ul class="navbar-nav">
-                    <label for="trigger_command" class="hidden-text" style="font-size: 20px;justify-content: space-between; align-items: center;">Show & Collapse  </label>
+                    <label for="trigger_command" class="hidden-text" style="font-size: 16px;justify-content: space-between; align-items: center;">Show & Collapse  </label>
                     <br>
                     <li class="nav-item">
                         <div class="form-check form-switch">
 
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_command"
-                                   onclick="toggleColumns(1)">
+                                   onclick="toggleColumns('command')" checked>
                             <label for="trigger_command" class="hidden-text">Command</label>
 
                         </div>
@@ -102,24 +102,23 @@
                     <li class="nav-item">
                         <div class="form-check form-switch">
 
-                            <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_calue"
-                                   onclick="toggleColumns(2)">
+                            <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_value"
+                                   onclick="toggleColumns('value')" checked >
                             <label for="trigger_command" class="hidden-text">Value</label>
 
                         </div>
                     </li>
                     <li class="nav-item">
                         <div class="form-check form-switch">
-                            <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_value_options"
-                                   onclick="toggleColumns(3)">
+                            <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_valueOptions"
+                                   onclick="toggleColumns('valueOptions')" checked>
                             <label for="trigger_command" class="hidden-text">Value options</label>
                         </div>
                     </li>
                     <li class="nav-item">
                         <div class="form-check form-switch">
-
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_timing"
-                                   onclick="toggleColumns(4)">
+                                   onclick="toggleColumns('timing')" checked>
                             <label for="trigger_command" class="hidden-text">Timing & Erros</label>
 
                         </div>
@@ -131,18 +130,15 @@
 </aside>
 
 <script>
-        window.onload = function() {
-        var checkboxes = document.querySelectorAll('.auto-trigger'); // Select all checkboxes with class 'auto-trigger'
 
-        checkboxes.forEach(function(checkbox) {
-            checkbox.checked = true; // Set each checkbox to checked
-            checkbox.onclick(); // Trigger the onclick event for each checkbox
-        });
-    }
 
 </script>
 <style>
-
+    .sidenav-normal {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #848ea3;
+    }
     .sidenav-footer .nav-item {
         margin: 10px 0;
     }

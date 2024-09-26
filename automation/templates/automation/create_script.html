@@ -276,6 +276,39 @@ syncScrollContainers();
     document.getElementById('id_value_manipulation').addEventListener('change', toggleValueManipulationFields);
     toggleValueManipulationFields();
 </script>
+<script>
+    // Function to toggle the visibility of a group of columns
+    function toggleColumns(group) {
+        var elements = document.querySelectorAll('.group-' + group);
+        elements.forEach(function (el) {
+            el.style.display = (el.style.display === 'none') ? 'table-cell' : 'none';
+        });
+        console.log('Toggled columns for group:', group);
+    }
+         // Function to restore and trigger toggle based on checkbox states
+    function restoreAndToggleColumns() {
+        var checkboxes = document.querySelectorAll('.auto-trigger');
 
+        checkboxes.forEach(function(checkbox) {
+            // Extract group number from the checkbox ID (assumes format is collapse_X)
+            var group = checkbox.id.split('_')[1];
+            
+            // Check if the checkbox is checked, then toggle columns accordingly
+            if (!checkbox.checked) {
+                console.log('Restoring checkbox state for group:', group);
+                toggleColumns(group);
+            }
+        });
+    }
+
+    // Listen for HTMX afterSwap event to trigger the column toggle based on checkboxes
+    document.body.addEventListener('htmx:afterSwap', function() {
+        console.log('Restored checkbox states');
+        restoreAndToggleColumns();
+    });
+
+</script>
+
+   
 </body>
 </html>

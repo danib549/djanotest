@@ -13,10 +13,8 @@
 
 
         <div class="card">
-        <div class="table-responsive">
-            <p>Step {{ step.step_id }}</p>
-            <!-- Buttons to collapse/expand columns -->
-            <div class="step-controls">
+        <p>Step {{ step.step_id }}</p>
+        <div class="step-controls">
                 {#                <button onclick="toggleColumns(1)">Toggle Command</button>#}
                 {#                <button onclick="toggleColumns(2)">Toggle Value</button>#}
                 {#                <button onclick="toggleColumns(3)">Toggle value options</button>#}
@@ -48,26 +46,30 @@
                     </button>
                 </div>
             </div>
+        <div class="table-responsive">
+            
+            <!-- Buttons to collapse/expand columns -->
+            
             <table class="table step-details">
                 <thead>
                 <tr>
-                    <th class="group-1">Environment</th>
-                    <th class="group-1">Command</th>
-                    <th class="group-1">Sub Command</th>
-                    <th class="group-1">Component</th>
-                    <th class="group-1">Packet</th>
-                    <th class="group-2">Parameters</th>
-                    <th class="group-2">Operators</th>
-                    <th class="group-2">Value Manipulation</th>
-                    <th class="group-2">Fixed Value</th>
-                    <th class="group-3">Min Value</th>
-                    <th class="group-3">Max Value</th>
-                    <th class="group-3">Resolution</th>
-                    <th class="group-3">Resolution Value</th>
-                    <th class="group-4">Enum Value</th>
-                    <th class="group-4">At Time</th>
-                    <th class="group-4">Delay</th>
-                    <th class="group-4">Sync</th>
+                    <th class="group-command">Environment</th>
+                    <th class="group-command">Command</th>
+                    <th class="group-command">Sub Command</th>
+                    <th class="group-command">Component</th>
+                    <th class="group-command">Packet</th>
+                    <th class="group-value">Parameters</th>
+                    <th class="group-value">Operators</th>
+                    <th class="group-value">Value Manipulation</th>
+                    <th class="group-value">Fixed Value</th>
+                    <th class="group-valueOptions">Min Value</th>
+                    <th class="group-valueOptions">Max Value</th>
+                    <th class="group-valueOptions">Resolution</th>
+                    <th class="group-valueOptions">Resolution Value</th>
+                    <th class="group-timing">Enum Value</th>
+                    <th class="group-timing">At Time</th>
+                    <th class="group-timing">Delay</th>
+                    <th class="group-timing">Sync</th>
                     <th class="group-5">Length Plus</th>
                     <th class="group-5">Length Minus</th>
                     <th class="group-5">Sequence Number</th>
@@ -81,23 +83,23 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="group-1">{{ step.environment }}</td>
-                    <td class="group-1">{{ step.command }}</td>
-                    <td class="group-1">{{ step.sub_command }}</td>
-                    <td class="group-1">{{ step.component }}</td>
-                    <td class="group-2">{{ step.packet }}</td>
-                    <td class="group-2">{{ step.parameters }}</td>
-                    <td class="group-2">{{ step.operator }}</td>
-                    <td class="group-2">{{ step.value_manipulation }}</td>
-                    <td class="group-2">{{ step.fixed_value }}</td>
-                    <td class="group-3">{{ step.min_value }}</td>
-                    <td class="group-3">{{ step.max_value }}</td>
-                    <td class="group-3">{{ step.resolution }}</td>
-                    <td class="group-3">{{ step.resolution_value }}</td>
-                    <td class="group-4">{{ step.enum_value }}</td>
-                    <td class="group-4">{{ step.at_time }}</td>
-                    <td class="group-4">{{ step.delay }}</td>
-                    <td class="group-4">{{ step.frame_errors.sync }}</td>
+                    <td class="group-command">{{ step.environment }}</td>
+                    <td class="group-command">{{ step.command }}</td>
+                    <td class="group-command">{{ step.sub_command }}</td>
+                    <td class="group-command">{{ step.component }}</td>
+                    <td class="group-value">{{ step.packet }}</td>
+                    <td class="group-value">{{ step.parameters }}</td>
+                    <td class="group-value">{{ step.operator }}</td>
+                    <td class="group-value">{{ step.value_manipulation }}</td>
+                    <td class="group-value">{{ step.fixed_value }}</td>
+                    <td class="group-valueOptions">{{ step.min_value }}</td>
+                    <td class="group-valueOptions">{{ step.max_value }}</td>
+                    <td class="group-valueOptions">{{ step.resolution }}</td>
+                    <td class="group-valueOptions">{{ step.resolution_value }}</td>
+                    <td class="group-timing">{{ step.enum_value }}</td>
+                    <td class="group-timing">{{ step.at_time }}</td>
+                    <td class="group-timing">{{ step.delay }}</td>
+                    <td class="group-timing">{{ step.frame_errors.sync }}</td>
                     <td class="group-5">{{ step.frame_errors.length_plus }}</td>
                     <td class="group-5">{{ step.frame_errors.length_minus }}</td>
                     <td class="group-5">{{ step.frame_errors.sequence_number }}</td>
@@ -116,31 +118,19 @@
     </div>
 </div>
 <style>
-    .step-controls {
-        display: flex;
-        justify-content: space-between; /* Spread space between left and right sections */
-        align-items: center;
-        margin-bottom: 10px; /* Adjust margin as needed */
-    }
+.step-controls {
+    display: flex;
+    justify-content: flex-end; /* Aligns all buttons to the right */
+    align-items: center;
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
 
-    .right-buttons {
-        display: flex;
-        gap: 10px; /* Space between buttons */
-    }
+.right-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+{#.group-command, .group-value, .group-valueOptions, .group-timing, .group-5, .group-6 {#}
+{#    display: none;#}
+{#}#}
 </style>
-<script>
-    // Function to toggle the visibility of a group of columns
-    function toggleColumns(group) {
-        var elements = document.querySelectorAll('.group-' + group);
-        elements.forEach(function (el) {
-            el.style.display = (el.style.display === 'none') ? 'table-cell' : 'none';
-        });
-    }
 
-    toggleColumns(1);
-    toggleColumns(2);
-    toggleColumns(3);
-    toggleColumns(4);
-
-
-</script>

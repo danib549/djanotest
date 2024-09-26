@@ -2,9 +2,9 @@
 
 {% load custom_filters %}
 {% load static %}
-<form method="POST" id="script-form">
+<form method="POST" id="script-form" style="overflow-x: hidden">
     {% csrf_token %}
-    <form method="POST" id="script-form">
+
         {% csrf_token %}
 {#        <div class="row">#}
             <h3>Test Creation</h3>
@@ -184,7 +184,7 @@
                         </div>
                         <br>
                         <hr class="horizontal dark mt-0">
-                        <p>Frame Errors</p>
+                        <h4>Frame Errors</h4>
                         <!-- Sync Field -->
                         <div class="form-check form-switch">
                             <label for="{{ form.sync.id_for_label }}">{{ form.sync.label }}</label>
