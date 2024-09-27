@@ -10,8 +10,8 @@
 <body>
 <div id="step-list" hx-trigger="refresh from:body">
     {% for step in session_script %}
-        <div class="step" id="step-{{ step.step_id }}" style="padding: 5px 30px">
-            <div class="card card-frame"  style="box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%)">
+        <div class="step" id="step-{{ step.step_id }}" style="padding: 5px 20px">
+            <div class="card card-frame"  style="box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%); border-radius: 15px;">
                 <div class="card-body" style="padding: 0.7rem;">
 
                     <div class="step-controls"
@@ -96,36 +96,34 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-
-                                    <td class="group-command">{{ step.environment }}</td>
-                                    <td class="group-command">{{ step.command }}</td>
-                                    <td class="group-command">{{ step.sub_command }}</td>
-                                    <td class="group-command">{{ step.component }}</td>
-                                    <td class="group-value">{{ step.packet }}</td>
-                                    <td class="group-value">{{ step.parameters }}</td>
-                                    <td class="group-value">{{ step.operator }}</td>
-                                    <td class="group-value">{{ step.value_manipulation }}</td>
-                                    <td class="group-value">{{ step.fixed_value }}</td>
-                                    <td class="group-valueOptions">{{ step.min_value }}</td>
-                                    <td class="group-valueOptions">{{ step.max_value }}</td>
-                                    <td class="group-valueOptions">{{ step.resolution }}</td>
-                                    <td class="group-valueOptions">{{ step.resolution_value }}</td>
-                                    <td class="group-timing">{{ step.enum_value }}</td>
-                                    <td class="group-timing">{{ step.at_time }}</td>
-                                    <td class="group-timing">{{ step.delay }}</td>
-                                    <td class="group-timing">{{ step.frame_errors.sync }}</td>
-                                    <td class="group-timing">{{ step.frame_errors.length_plus }}</td>
-                                    <td class="group-timing">{{ step.frame_errors.length_minus }}</td>
-                                    <td class="group-timing">{{ step.frame_errors.sequence_number }}</td>
-                                    <td class="group-timing">{{ step.frame_errors.checksum }}</td>
-                                    <td class="group-timing">{{ step.value_tolerance }}</td>
-                                    <td class="group-timing">{{ step.value_tolerance_value }}</td>
-                                    <td class="group-timing">{{ step.time_tolerance }}</td>
-                                    <td class="group-timing">{{ step.time_tolerance_value }}</td>
-                                    <td>{{ step.description }}</td>
-
-                                </tr>
+                                    <tr>
+                                        <td class="group-command" title="{{ step.environment }}">{{ step.environment }}</td>
+                                        <td class="group-command" title="{{ step.command }}">{{ step.command }}</td>
+                                        <td class="group-command" title="{{ step.sub_command }}">{{ step.sub_command }}</td>
+                                        <td class="group-command" title="{{ step.component }}">{{ step.component }}</td>
+                                        <td class="group-value" title="{{ step.packet }}">{{ step.packet }}</td>
+                                        <td class="group-value" title="{{ step.parameters }}">{{ step.parameters }}</td>
+                                        <td class="group-value" title="{{ step.operator }}">{{ step.operator }}</td>
+                                        <td class="group-value" title="{{ step.value_manipulation }}">{{ step.value_manipulation }}</td>
+                                        <td class="group-value" title="{{ step.fixed_value }}">{{ step.fixed_value }}</td>
+                                        <td class="group-valueOptions" title="{{ step.min_value }}">{{ step.min_value }}</td>
+                                        <td class="group-valueOptions" title="{{ step.max_value }}">{{ step.max_value }}</td>
+                                        <td class="group-valueOptions" title="{{ step.resolution }}">{{ step.resolution }}</td>
+                                        <td class="group-valueOptions" title="{{ step.resolution_value }}">{{ step.resolution_value }}</td>
+                                        <td class="group-timing" title="{{ step.enum_value }}">{{ step.enum_value }}</td>
+                                        <td class="group-timing" title="{{ step.at_time }}">{{ step.at_time }}</td>
+                                        <td class="group-timing" title="{{ step.delay }}">{{ step.delay }}</td>
+                                        <td class="group-timing" title="{{ step.frame_errors.sync }}">{{ step.frame_errors.sync }}</td>
+                                        <td class="group-timing" title="{{ step.frame_errors.length_plus }}">{{ step.frame_errors.length_plus }}</td>
+                                        <td class="group-timing" title="{{ step.frame_errors.length_minus }}">{{ step.frame_errors.length_minus }}</td>
+                                        <td class="group-timing" title="{{ step.frame_errors.sequence_number }}">{{ step.frame_errors.sequence_number }}</td>
+                                        <td class="group-timing" title="{{ step.frame_errors.checksum }}">{{ step.frame_errors.checksum }}</td>
+                                        <td class="group-timing" title="{{ step.value_tolerance }}">{{ step.value_tolerance }}</td>
+                                        <td class="group-timing" title="{{ step.value_tolerance_value }}">{{ step.value_tolerance_value }}</td>
+                                        <td class="group-timing" title="{{ step.time_tolerance }}">{{ step.time_tolerance }}</td>
+                                        <td class="group-timing" title="{{ step.time_tolerance_value }}">{{ step.time_tolerance_value }}</td>
+                                        <td title="{{ step.description }}">{{ step.description }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
 
