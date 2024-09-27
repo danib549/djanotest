@@ -138,23 +138,28 @@ def script_list(request):
 
 
 @login_required
+@login_required
 def load_script(request):
     if request.method == 'POST':
         script_id = request.POST.get('script_id')
-        if script_id:
+        version_id = request.POST.get('version_id')  # Get selected version
+
+        if script_id and version_id:
             script = get_object_or_404(Script, id=script_id, user=request.user)
-            script_content  = script.load_script()
-            print(script_content['project'])
+            manager = Script_db_Manager(script, script.project)
+
+            # Load the specific version of the script
+            script_content = manager.load_script_version(int(version_id))
+
             project = get_object_or_404(Project, name=script_content['project'])
             request.session['project_id'] = project.id
             request.session['script'] = script_content['steps']
             request.session['editing_script_id'] = script.id  # Store script_id to indicate editing
-            request.session['script_version'] = script.script_version
+            request.session['script_version'] = version_id
             request.session.modified = True
 
             return redirect('create_script')
     return redirect('script_list')
-
 
 
 @csrf_exempt

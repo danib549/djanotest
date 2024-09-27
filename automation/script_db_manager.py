@@ -40,6 +40,22 @@ class Script_db_Manager:
     def load_script(self):
         return self.decrypt_data(self.script.script_data)
 
+    def load_script_version(self, version_number):
+        table_name = f"project_{self.project.id}_scriptversion"
+
+        with connection.cursor() as cursor:
+            cursor.execute(f"""
+                SELECT script_data FROM {table_name}
+                WHERE script_id = %s AND version_number = %s;
+            """, [self.script.id, version_number])
+
+            row = cursor.fetchone()
+            if row:
+                encrypted_data = row[0]
+                return self.decrypt_data(encrypted_data)
+
+        return None  # Handle case where the script version is not found
+
     def create_project_table_script_versions(self, project_id):
         print("project id:", project_id)
         table_name = f"project_{project_id}_scriptversion"

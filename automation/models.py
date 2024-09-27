@@ -38,7 +38,6 @@ class Script(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     test_name = models.CharField(max_length=100)
-    script_data = models.BinaryField()
     script_version = models.IntegerField(default=0)
 
     def save_script(self, script_steps,script_version):
@@ -46,8 +45,5 @@ class Script(models.Model):
         manager.save_script(script_steps)
 
 
-    def load_script(self):
-        manager = Script_db_Manager(self, self.project)
-        return manager.load_script()
 
 
