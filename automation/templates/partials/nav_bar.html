@@ -1,6 +1,5 @@
 {% load static %}
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
-       id="sidenav-main">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "  id="sidenav-main">
     <div class="sidenav-header">
         <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none bg-black ">
             <a href="javascript:;" class="nav-link p-0">
@@ -98,14 +97,15 @@
                         </div>
                     </li>
                     <hr class="horizontal dark mt-0">
-                    <label for="trigger_command" class="hidden-text" id="footer_title" style="font-size: 16px;justify-content: space-between; align-items: center;">&nbsp;&nbsp;Show & Collapse  </label>
+{#                    <label for="trigger_command" class="hidden-text" id="footer_title" style="font-size: 16px;justify-content: space-between; align-items: center;    font-weight: 600;">&nbsp;&nbsp;Show & Collapse  </label>#}
 {#                    <br>#}
+                    
                     <li class="nav-item">
                         <div class="form-check form-switch">
 
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_command"
                                    onclick="toggleColumns('command')" checked>
-                            <label for="trigger_command" class="hidden-text">Command</label>
+                            <label for="collapse_command" class="form-check-label hidden-text">Command</label>
 
                         </div>
                     </li>
@@ -114,7 +114,7 @@
 
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_value"
                                    onclick="toggleColumns('value')" checked >
-                            <label for="trigger_command" class="hidden-text">Value</label>
+                            <label for="collapse_value" class="form-check-label hidden-text">Value</label>
 
                         </div>
                     </li>
@@ -122,14 +122,14 @@
                         <div class="form-check form-switch">
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_valueOptions"
                                    onclick="toggleColumns('valueOptions')" checked>
-                            <label for="trigger_command" class="hidden-text">Value options</label>
+                            <label for="collapse_valueOptions" class="form-check-label hidden-text">Value options</label>
                         </div>
                     </li>
                     <li class="nav-item">
                         <div class="form-check form-switch">
                             <input type="checkbox" name="sync" class="form-check-input auto-trigger" id="collapse_timing"
                                    onclick="toggleColumns('timing')" checked>
-                            <label for="trigger_command" class="hidden-text">Timing & Erros</label>
+                            <label for="collapse_timing" class=" form-check-label hidden-text">Timing & Erros</label>
 
                         </div>
                     </li>
@@ -189,7 +189,9 @@
         overflow: hidden;
         white-space: nowrap;
         display: inline-block;
-        transition: width 0.3s ease, opacity 0.2s ease;
+        transition: width 0.35s ease, opacity 0.25s ease;
+        font-weight: 400;
+    font-size: medium;
     }
 
     /* On hover, slide in the text */

@@ -5,24 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon and Apple Icon -->
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-
-    <!-- Nucleo Icons -->
     <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
-
-    <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
-    <!-- CSS Files -->
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
-    
 
 </head>
 <body class="g-sidenav-show bg-gray-100">
@@ -30,32 +22,27 @@
 {% include 'partials/nav_bar.html' %}
 
 <main class="main-content position-relative  h-100 border-radius-lg ps ps--active-y">
-    <!--    test-->
-
-    <!--    test-->
         <br>
-<!--    <h1>Create Script</h1>-->
     {% include 'partials/form_partial.html' %}
     <h2>Steps</h2>
     <div id="script-list">
         {% include 'partials/step_list.html' %}
     </div>
 </main>
-<!-- Core JS Files -->
+
 <script src="{% static 'js/core/popper.min.js' %}"></script>
 <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
 
-
-<!-- Plugin JS Files -->
 <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
 <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
 <script src="{% static 'js/plugins/dragula/dragula.min.js' %}"></script>
 <script src="{% static 'js/plugins/jkanban/jkanban.js' %}"></script>
 <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
 <script src="{% static 'js/plugins/choices.min.js' %}"></script>
-
 <script src="{% static 'js/soft-ui-dashboard.min.js'  %}"></script>
-    <!-- script for new choices drop downs -->
+
+
+
 <script>
         const choicesInstances = {};
         document.addEventListener('DOMContentLoaded', function () {
@@ -91,7 +78,6 @@
     
 
     </script>
-
 <script>
     
     function updateFormMode(isEditMode) {
@@ -203,11 +189,6 @@
         }
 
     });
-</script>
-
-<script>
-
-
 </script>
 <script>
 
@@ -326,7 +307,74 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+<style>
+    .step-controls {
+        display: flex;
+        justify-content: flex-end; /* Aligns all buttons to the right */
+        align-items: center;
+        margin-bottom: 10px; /* Adjust margin as needed */
+    }
 
-   
+    .right-buttons {
+        display: flex;
+        gap: 10px; /* Space between buttons */
+    }
+    .btn-sma {
+        padding: 7px 10px;
+        margin: 0;
+    }
+/* Define a fixed width for all th and td elements based on header content */
+
+</style>
+   <style>
+/* Ensure the table layout is fixed */
+.step_table {
+    table-layout: fixed;
+    width: auto; /* Allow the table to expand naturally */
+    min-width: 100%; /* Set the minimum width to fill the container */
+
+}
+
+/* Set the width of each column to match its header */
+.step_table th, .step_table td {
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Add ellipsis to overflowing content */
+    max-width: 200px; /* Set a maximum width for each column */
+    min-width: 200px; /* Ensure the column width matches across tables */
+    text-align: center; /* Center text within cells */
+}
+
+/* Make the table container scrollable */
+.table-responsive {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    display: block;
+    max-width: 100%; /* Allow the container to fit the parent */
+    white-space: nowrap; /* Prevent content from wrapping within the container */
+}
+.step_table th, .step_table td {
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing content */
+    text-overflow: ellipsis; /* Add ellipsis to overflowing content */
+    max-width: 150px; /* Set a maximum width for each column */
+    min-width: 150px; /* Ensure the column width matches across tables */
+    {#border: 1px solid #ddd; /* Add border to each cell */#}
+    padding: 8px; /* Add padding to cells */
+}
+
+table tr:first-child {
+    border-top: none !important; /* Removes top border */
+}
+
+table tr:last-child {
+    border-bottom: none !important; /* Removes bottom border */
+}
+/* Header specific styles */
+.step_table th {
+    background-color: #f2f2f2; /* Optional: light background for headers */
+    font-weight: bold; /* Bold text for headers */
+}
+
+    </style>
 </body>
 </html>

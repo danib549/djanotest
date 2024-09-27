@@ -17,9 +17,6 @@ class ScriptDataManager:
             raise ValueError("No script initialized in session.")
 
         step_id = form.cleaned_data.get('step_id')
-        if not step_id:
-            step_id = len(self.session['script']) + 1  # Assign new ID if not provided
-
         step_data = {
             'step_id': step_id,
             'environment': form.cleaned_data['environment'],
@@ -52,19 +49,16 @@ class ScriptDataManager:
             'description': form.cleaned_data['description'] or ''
         }
 
-        existing_step_index = next(
-            (index for (index, d) in enumerate(self.session['script']) if d['step_id'] == step_data['step_id']), None)
-
-        if existing_step_index is not None:
-            self.session['script'][existing_step_index] = step_data
+        # Directly update the step if step_id exists
+        if step_id:
+            self.session['script'][step_id - 1] = step_data  # Assume step_id corresponds to its index (1-based)
         else:
-            # Add a new step
+            # Add a new step if step_id is not provided
+            step_data['step_id'] = len(self.session['script']) + 1
             self.session['script'].append(step_data)
 
         self.session.modified = True
 
-        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return JsonResponse({'step_data': step_data})
         return None
 
     def get_step_from_session(self, step_id):

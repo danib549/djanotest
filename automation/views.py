@@ -47,7 +47,6 @@ def create_script(request):
     script_data_manager.initialize_script_session()
 
     project_id = request.session.get('project_id')
-    # script_version = request.session.get('Script_Version')
     project = get_object_or_404(Project, id=project_id, users=request.user)
 
     if request.method == 'POST':
@@ -59,7 +58,7 @@ def create_script(request):
                 script_data_manager.save_script(request.user, project)
                 return redirect('script_list')
 
-
+            # Handle adding or editing a step
             script_data_manager.add_or_edit_step(form)
 
             if request.headers.get('HX-Request'):  # HTMX request
@@ -174,7 +173,5 @@ def update_step_order(request):
             return render(request, 'partials/step_list.html', {
                 'session_script': updated_steps
             })
-
         return JsonResponse({'error': 'Step not found'}, status=404)
-
     return JsonResponse({'error': 'Invalid request method'}, status=405)

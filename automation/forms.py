@@ -3,7 +3,7 @@ from .models import Project
 
 class ScriptForm(forms.Form):
     ENVIRONMENT_CHOICES = [
-        ('option_1', 'Option 1'),
+        ('option_111111111111111111111111111111111111111111', 'Option 1'),
         ('option_2', 'Option 2'),
         ('option_3', 'Option 3'),
     ]
