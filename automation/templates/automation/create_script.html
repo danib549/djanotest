@@ -308,6 +308,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <style>
+    .seperator {
+        width: 10px;
+    }
     .step-controls {
         display: flex;
         justify-content: flex-end; /* Aligns all buttons to the right */
@@ -327,6 +330,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </style>
    <style>
+        td.group-command {
+        border-bottom: 2px solid #708ebc;
+        }
+
+        td.group-value {
+        border-bottom: 2px solid #faa935;
+        }
+
+        td.group-valueOptions {
+        border-bottom: 2px solid #a055c7;
+        }
+
+        td.group-timing {
+        border-bottom: 2px solid #353873;
+        }
 /* Ensure the table layout is fixed */
 .step_table {
     table-layout: fixed;
@@ -334,15 +352,21 @@ document.addEventListener('DOMContentLoaded', function() {
     min-width: 100%; /* Set the minimum width to fill the container */
 
 }
+:root {
+    scrollbar-color: #a6a6a6 #ffffff; /* thumb color and track color */
+    scrollbar-width: thin; /* You can set 'auto', 'thin', or 'none' */
+    border: 0px solid #ffffff;
+}
 
 /* Set the width of each column to match its header */
 .step_table th, .step_table td {
     white-space: nowrap; /* Prevent text from wrapping */
     overflow: hidden; /* Hide overflowing content */
     text-overflow: ellipsis; /* Add ellipsis to overflowing content */
-    max-width: 200px; /* Set a maximum width for each column */
-    min-width: 200px; /* Ensure the column width matches across tables */
+    max-width: 150px; /* Set a maximum width for each column */
+    min-width: 150px; /* Ensure the column width matches across tables */
     text-align: center; /* Center text within cells */
+    padding: 7px;
 }
 
 /* Make the table container scrollable */
@@ -352,15 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
     max-width: 100%; /* Allow the container to fit the parent */
     white-space: nowrap; /* Prevent content from wrapping within the container */
 }
-.step_table th, .step_table td {
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflowing content */
-    text-overflow: ellipsis; /* Add ellipsis to overflowing content */
-    max-width: 150px; /* Set a maximum width for each column */
-    min-width: 150px; /* Ensure the column width matches across tables */
-    {#border: 1px solid #ddd; /* Add border to each cell */#}
-    padding: 8px; /* Add padding to cells */
-}
+
 
 table tr:first-child {
     border-top: none !important; /* Removes top border */
@@ -374,7 +390,18 @@ table tr:last-child {
     background-color: #f2f2f2; /* Optional: light background for headers */
     font-weight: bold; /* Bold text for headers */
 }
+.step_table th.seperator {
+    max-width: 3px !important;
+    width: 3px !important;
+    min-width: 3px !important; /* Override the default min-width */
+}
 
+.step_table td.seperator {
+    max-width: 3px !important;
+    width: 3px !important;
+    min-width: 3px !important; /* Override the default min-width */
+
+}
     </style>
 </body>
 </html>

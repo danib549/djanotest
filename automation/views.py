@@ -145,7 +145,6 @@ def load_script(request):
             script = get_object_or_404(Script, id=script_id, user=request.user)
             script_content  = script.load_script()
             print(script_content['project'])
-            # Set project, environment, and script in the session
             project = get_object_or_404(Project, name=script_content['project'])
             request.session['project_id'] = project.id
             request.session['script'] = script_content['steps']
