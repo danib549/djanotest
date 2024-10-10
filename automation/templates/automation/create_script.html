@@ -7,11 +7,15 @@
 
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
-
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    
+    <!-- donwload fonts!!!!!!!!! -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
     <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    
 
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
@@ -21,9 +25,10 @@
 
 {% include 'partials/nav_bar.html' %}
 
-<main class="main-content position-relative  h-100 border-radius-lg ps ps--active-y">
+<main class="main-content position-relative border-radius-lg ">
         <br>
     {% include 'partials/form_partial.html' %}
+    {% include 'partials/custom_parameters_table.html' with variables=variables  %}
     <h2>Steps</h2>
     <div id="script-list">
         {% include 'partials/step_list.html' %}
@@ -35,12 +40,16 @@
 
 <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
 <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
-<script src="{% static 'js/plugins/dragula/dragula.min.js' %}"></script>
 <script src="{% static 'js/plugins/jkanban/jkanban.js' %}"></script>
 <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
 <script src="{% static 'js/plugins/choices.min.js' %}"></script>
 <script src="{% static 'js/soft-ui-dashboard.min.js'  %}"></script>
-
+<script>
+    document.addEventListener('htmx:configRequest', (event) => {
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        event.detail.headers['X-CSRFToken'] = csrfToken;
+    });
+</script>
 
 
 <script>
@@ -58,16 +67,18 @@
             'id_resolution',
             'id_value_tolerance',
             'id_time_tolerance',
+            'id_transmition_line'
 
         ];
     
-        // Loop through each ID and initialize Choices.js if the element exists and is not already initialized
+        
         selectElementIds.forEach(function (id) {
             const element = document.getElementById(id);
             if (element && !choicesInstances[id]) {
                 choicesInstances[id] = new Choices(element);
             }
         });
+
     });
     
     function updateSelectValue(id, value) {
@@ -79,19 +90,44 @@
 
     </script>
 <script>
+document.addEventListener('htmx:beforeRequest', function (event) {
+    console.log('HTMX request initiated:', event.detail.path, event.detail.verb);
+
+        const button = document.getElementById('action-button');
+
+        button.disabled = true;
+        button.innerHTML = `
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        `;
+
+});
+
+document.addEventListener('htmx:afterRequest', function (event) {
+    console.log('HTMX request completed:', event.detail.path, event.detail.verb);
+
+        const button = document.getElementById('action-button');
+        button.disabled = false;
+        button.innerHTML = 'Add Step'; 
+
+});
+
+</script>
+
+<script>
     
     function updateFormMode(isEditMode) {
         const actionButton = document.getElementById('action-button');
 
         if (isEditMode) {
-            // Change to Edit mode
+
             actionButton.innerText = 'Edit Step';
-            actionButton.setAttribute('hx-post', '/edit_step/');  // Set the correct URL for editing
+            actionButton.setAttribute('hx-post', '/edit_step/'); 
             console.log('Switched to Edit Mode');
         } else {
-            // Change to Add mode
+
             actionButton.innerText = 'Add Step';
-            actionButton.setAttribute('hx-post', '/create_script/');  // Reset to the default URL for adding
+            actionButton.setAttribute('hx-post', '/create_script/'); 
             console.log('Switched to Add Mode');
             toggleValueManipulationFields();
         }
@@ -118,7 +154,6 @@
                     alert(data.error);
                     console.error('Error loading step:', data.error);
                 } else {
-                    // Populate form fields with the data
                     document.getElementById('id_step_id').value = data.step_id || '';
                     updateSelectValue('id_environment', data.environment);
                     updateSelectValue('id_command', data.environment);
@@ -153,7 +188,7 @@
                     document.getElementById('id_time_tolerance_value').value = data.time_tolerance_value || '';
                     document.getElementById('id_description').value = data.description || '';
 
-                    // Update checkboxes for frame errors
+
                     document.getElementById('id_sync').checked = data.frame_errors.sync || false;
                     document.getElementById('id_length_plus').checked = data.frame_errors.length_plus || false;
                     document.getElementById('id_length_minus').checked = data.frame_errors.length_minus || false;
@@ -162,19 +197,19 @@
 
                     console.log('Form fields populated with step data:', data);
                     toggleValueManipulationFields();
-                    // Switch to edit mode
+
                     updateFormMode(true);
                 }
             })
             .catch(err => console.error('Error fetching step data:', err));
     }
 
-    // Function to reset form after editing is complete
+
     function resetForm() {
         console.log('Resetting form to Add Step mode');
-        document.getElementById('script-form').reset();  // Reset all form fields
-        document.getElementById('id_step_id').value = '';  // Ensure step_id is cleared
-        updateFormMode(false);  // Reset the button back to "Add Step"
+        document.getElementById('script-form').reset();  
+        document.getElementById('id_step_id').value = ''; 
+        updateFormMode(false);  
     }
 
     document.addEventListener('htmx:beforeOnLoad', function (event) {
@@ -226,7 +261,6 @@
 <script>
 
 
-    // Function to toggle the visibility of a group of columns
     function toggleColumns(group) {
         var elements = document.querySelectorAll('.group-' + group);
         elements.forEach(function (el) {
@@ -234,15 +268,13 @@
         });
         console.log('Toggled columns for group:', group);
     }
-         // Function to restore and trigger toggle based on checkbox states
+
     function restoreAndToggleColumns() {
         var checkboxes = document.querySelectorAll('.auto-trigger');
 
         checkboxes.forEach(function(checkbox) {
-            // Extract group number from the checkbox ID (assumes format is collapse_X)
             var group = checkbox.id.split('_')[1];
             
-            // Check if the checkbox is checked, then toggle columns accordingly
             if (!checkbox.checked) {
                 console.log('Restoring checkbox state for group:', group);
                 toggleColumns(group);
@@ -250,21 +282,21 @@
         });
     }
 
-    // Listen for HTMX afterSwap event to trigger the column toggle based on checkboxes
+
 document.addEventListener('DOMContentLoaded', function() {
     let scrollableContainers = [];
-    let syncEnabled = true; // Sync is enabled by default
+    let syncEnabled = true; 
 
     function syncScrollContainers() {
-        // Clear existing event listeners and containers array
+
         scrollableContainers.forEach(container => {
             container.removeEventListener('scroll', handleScroll);
         });
 
-        // Get all scrollable containers and store them in an array
+
         scrollableContainers = Array.from(document.querySelectorAll('.table-responsive'));
 
-        // Attach a single event listener to all containers if sync is enabled
+
         if (syncEnabled) {
             scrollableContainers.forEach(function (container) {
                 container.addEventListener('scroll', handleScroll);
@@ -272,9 +304,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event handler to synchronize scroll position
+
     function handleScroll(event) {
-        if (!syncEnabled) return; // Do nothing if sync is disabled
+        if (!syncEnabled) return; 
 
         const scrolledContainer = event.target;
         const scrollLeft = scrolledContainer.scrollLeft;
@@ -286,22 +318,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Call the function initially to set up scroll sync for existing containers
+
     syncScrollContainers();
 
-    // Listen for htmx:afterSwap event to re-trigger syncScrollContainers
+
     document.body.addEventListener('htmx:afterSwap', function() {
         console.log('Restoring scroll synchronization');
         syncScrollContainers();
-        // Call other functions like restoreAndToggleColumns if needed
         restoreAndToggleColumns();
     });
 
-    // Toggle scroll sync based on the checkbox
+
     const syncToggle = document.getElementById('toggle-sync-scroll');
     syncToggle.addEventListener('change', function() {
-        syncEnabled = this.checked; // Update sync state based on checkbox
-        syncScrollContainers(); // Re-run to enable/disable sync
+        syncEnabled = this.checked; 
+        syncScrollContainers(); 
     });
 });
 
@@ -313,29 +344,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     .step-controls {
         display: flex;
-        justify-content: flex-end; /* Aligns all buttons to the right */
+        justify-content: flex-end; 
         align-items: center;
-        margin-bottom: 10px; /* Adjust margin as needed */
+        margin-bottom: 10px;
     }
 
     .right-buttons {
         display: flex;
-        gap: 10px; /* Space between buttons */
+        gap: 10px; 
     }
     .btn-sma {
         padding: 7px 10px;
         margin: 0;
     }
-/* Define a fixed width for all th and td elements based on header content */
+
 
 </style>
    <style>
         td.group-command {
-        border-bottom: 2px solid #708ebc;
+        border-bottom: 2px solid #aeaeae;
         }
 
         td.group-value {
-        border-bottom: 2px solid #faa935;
+        border-bottom: 2px solid #137eb1;
         }
 
         td.group-valueOptions {
@@ -345,36 +376,36 @@ document.addEventListener('DOMContentLoaded', function() {
         td.group-timing {
         border-bottom: 2px solid #353873;
         }
-/* Ensure the table layout is fixed */
+
 .step_table {
     table-layout: fixed;
-    width: auto; /* Allow the table to expand naturally */
-    min-width: 100%; /* Set the minimum width to fill the container */
+    width: auto; 
+    min-width: 100%; 
 
 }
 :root {
-    scrollbar-color: #a6a6a6 #ffffff; /* thumb color and track color */
-    scrollbar-width: thin; /* You can set 'auto', 'thin', or 'none' */
+    scrollbar-color: #e2e2e2 #ffffff;
+    scrollbar-width: thin;
     border: 0px solid #ffffff;
 }
 
-/* Set the width of each column to match its header */
+
 .step_table th, .step_table td {
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflowing content */
-    text-overflow: ellipsis; /* Add ellipsis to overflowing content */
-    max-width: 150px; /* Set a maximum width for each column */
-    min-width: 150px; /* Ensure the column width matches across tables */
-    text-align: center; /* Center text within cells */
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 100px;
+    min-width: 100px;
+    text-align: center; 
     padding: 7px;
 }
 
-/* Make the table container scrollable */
+
 .table-responsive {
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto;
     display: block;
-    max-width: 100%; /* Allow the container to fit the parent */
-    white-space: nowrap; /* Prevent content from wrapping within the container */
+    max-width: 100%; 
+    white-space: nowrap; 
 }
 
 
@@ -401,7 +432,40 @@ table tr:last-child {
     width: 3px !important;
     min-width: 3px !important; /* Override the default min-width */
 
+
+}
+
+th{
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+  td {
+    padding: 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .vertical-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px; 
+    background-color: #606060; 
+    transform: translateX(-50%); 
+  }
+.delete-button {
+    background-image: linear-gradient(310deg, #060d87 0%, #62d4ff 100%);
+}
+.parameters-btn {
+    background-image: linear-gradient(310deg, #060d87 0%, #62d4ff 100%);
+}
+.table_control .btn-sma {
+        margin: 5px 5px;
 }
     </style>
+
 </body>
 </html>

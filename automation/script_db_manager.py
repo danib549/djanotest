@@ -23,6 +23,7 @@ class Script_db_Manager:
             'project': self.project.name,
             'steps': script_steps
         }
+        print(script_content)
 
         encrypted_data = self.encrypt_data(script_content)
         self.script.script_data = encrypted_data
@@ -37,8 +38,8 @@ class Script_db_Manager:
         file_path = os.path.join(project_folder, f'script_{self.script.id}_{self.script.script_version}.ScriptQ')
         with open(file_path, 'wb') as f:
             f.write(encrypted_data)
-    def load_script(self):
-        return self.decrypt_data(self.script.script_data)
+    def decrypt_script(self, encrypted_data):
+        return self.decrypt_data(encrypted_data)
 
     def load_script_version(self, version_number):
         table_name = f"project_{self.project.id}_scriptversion"
@@ -52,9 +53,9 @@ class Script_db_Manager:
             row = cursor.fetchone()
             if row:
                 encrypted_data = row[0]
-                return self.decrypt_data(encrypted_data)
+                return self.decrypt_script(encrypted_data)
 
-        return None  # Handle case where the script version is not found
+        return None
 
     def create_project_table_script_versions(self, project_id):
         print("project id:", project_id)
@@ -69,14 +70,12 @@ class Script_db_Manager:
                     script_data BLOB
                 );
             """)
-    # create a new vesrion of the script and save it to the database 
+
     def save_script_to_db(self,encrypted_data):
         if self.script.script_version == 0:
             self.script.script_version = 1
         else:
             self.script.script_version += 1
-
-        # Save the updated script version to the database
         self.script.save()
         print("script version :" , self.script.script_version)
         table_name = f"project_{self.project.id}_scriptversion"

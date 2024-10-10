@@ -10,4 +10,6 @@ urlpatterns = [
     path('load_step/<int:step_id>/', views.load_step, name='load_step'),
     path('update_step_order/', views.update_step_order, name='update_step_order'),
     path('get_script_versions/', views.get_script_versions, name='get_script_versions'),
+    path('add-variable/', views.add_variable, name='add_variable'),
+    path('delete-variable/<int:variable_id>/', views.delete_variable, name='delete_variable'),
 ]

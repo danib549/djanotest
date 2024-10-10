@@ -42,7 +42,8 @@ class ScriptForm(forms.Form):
         ('no-change', 'No Change'),
         ('fixed', 'Fixed Value'),
         ('random', 'Random Value'),
-        ('enum', 'Enum')
+        ('enum', 'Enum'),
+        ('Parameters', 'Parameters')
     ]
 
     OPERATOR_CHOICES = [
@@ -61,12 +62,18 @@ class ScriptForm(forms.Form):
         ('reach-value', 'Time to Reach Value'),
         ('stable-value', 'Period of Stable Value')
     ]
+    TRANSMITION_LINE = [
+        ('Real', 'Real'),
+        ('Test', 'Test'),
+        ('Test2', 'Test2'),
+    ]
 
     environment = forms.ChoiceField(choices=ENVIRONMENT_CHOICES, label="Environment")
     command = forms.ChoiceField(choices=COMMAND_CHOICES, label="Command")
     sub_command = forms.ChoiceField(choices=SUB_COMMAND_CHOICES, label="Sub Command")
     component = forms.ChoiceField(choices=COMPONENT_CHOICES, label="Component")
     packet = forms.ChoiceField(choices=PACKET_CHOICES, label="Packet")
+    transmition_line = forms.ChoiceField(choices=TRANSMITION_LINE, label="Transmition Line")
     parameters = forms.ChoiceField(choices=PARAMETERS_CHOICES, label="Parameters")
     operator = forms.ChoiceField(choices=OPERATOR_CHOICES, label="Operator")
     value_manipulation = forms.ChoiceField(choices=VALUE_MANIPULATION_CHOICES, label="Value Manipulation")
@@ -96,6 +103,7 @@ class ScriptForm(forms.Form):
 class GlobalSettingsForm(forms.Form):
     project = forms.ModelChoiceField(queryset=Project.objects.none(), label="Select Project")
     test_name = forms.CharField(max_length=100, required=True)
+    Requirment_id = forms.CharField(max_length=100, required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(GlobalSettingsForm, self).__init__(*args, **kwargs)

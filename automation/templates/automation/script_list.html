@@ -1,11 +1,12 @@
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+    <script src="{% static 'js/htmx.min.js' %}"></script>
     {#    <link rel="stylesheet" href="{% static 'automation/style.css' %}">#}
 </head>
-{% block content %}
+
     <h2>Your Scripts</h2>
 
     <!-- Project Selection Dropdown -->
@@ -48,7 +49,7 @@
         <button type="submit">Load Selected Script</button>
     </form>
 
-    <!-- JavaScript to enable the dropdown after HTMX loads the content -->
+
     <script>
         document.addEventListener("htmx:afterRequest", function () {
             const versionSelect = document.getElementById("version-select");
@@ -71,4 +72,4 @@
     <script src="{% static 'js/plugins/choices.min.js' %}"></script>
 
     <script src="{% static 'js/soft-ui-dashboard.min.js' %}"></script>
-{% endblock %}
+

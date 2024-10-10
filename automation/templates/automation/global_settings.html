@@ -1,8 +1,114 @@
-{% block content %}
-  <h2>Select Settings</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Script</button>
-  </form>
-{% endblock %}
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon and Apple Icon -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <!-- Nucleo Icons -->
+    <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet"/>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <!-- CSS Files -->
+    <script src="{% static 'js/htmx.min.js' %}"></script>
+    <!-- CSS Files -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- JavaScript Files -->
+    <script src="{% static 'js/core/popper.min.js' %}"></script>
+    <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/soft-ui-dashboard.js' %}"></script>
+    <script src="{% static 'js/plugins/threejs.js' %}"></script>
+    <script src="{% static 'js/plugins/orbit-controls.js' %}"></script>
+
+    <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
+
+
+</head>
+<body class="g-sidenav-show bg-gray-100">
+
+{% include 'partials/nav_bar.html' %}
+
+<main class="main-content position-relative border-radius-lg ">
+    <div class="container-fluid">
+      <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('{% static '/img/s.png' %}'); background-position-y: 50%;">
+        <span class="mask  opacity-6"></span>
+      </div>
+      <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden" style="       box-shadow: inset 0 0px 1px 1px rgba(254, 254, 254, 0.9), 0 20px 27px 0 rgb(0 0 0 / 19%) !important;height: 80px}">
+        <div class="row gx-4" style="    height: 50px;">
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="mb-1">
+                User : {{request.user.username}}
+              </h5>
+              <p class="mb-0 font-weight-bold text-sm">
+
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+            <div class="nav-wrapper position-relative end-0">
+              <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" >
+
+        <div class="col">
+
+        </div>
+        <div class="col">
+              <div class="card "style="margin-top:30px;z-index: 1;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 28%);">
+                <div class="card-body" style="justify-content: center;">
+                    <h2>Create New Script</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div>
+                            <label for="{{ form.project.id_for_label }}">{{ form.project.label }}</label>
+                            {{ form.project|add_class:"form-control" }}
+                        </div>
+                        <div>
+                            <label for="{{ form.test_name.id_for_label }}">{{ form.test_name.label }}</label>
+                            {{ form.test_name|add_class:"form-control" }}
+                        </div>
+{#                        <div>#}
+{#                            <label for="{{ form.Requirment_id.id_for_label }}">{{ form.Requirment_id.label }}</label>#}
+{#                            {{ form.Requirment_id|add_class:"form-control" }}#}
+{#                        </div>#}
+                        <br>
+                        <button class="btn bg-gradient-info btn-lg" type="submit" style="margin-left: 28%">Create Script
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col" style="height: 800px ;">
+            <div id="globe" class="position-absolute end-0 top-10 mt-sm-3 mt-7 me-lg-7" style="margin-top:180px !important;">
+                <canvas width="700" height="600" class="w-lg-100 h-lg-100 w-75 h-75 me-lg-0 me-n10 mt-lg-5"></canvas>
+            </div>
+        </div>
+    </div>
+<script src="{% static 'js/orbit.js' %}"></script>
+</main>
+</body>
+</html>

@@ -10,56 +10,19 @@
 <body>
 <div id="step-list" hx-trigger="refresh from:body">
     {% for step in session_script %}
-        <div class="step" id="step-{{ step.step_id }}" style="padding: 5px 20px">
-            <div class="card card-frame"  style="box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%); border-radius: 15px;">
-                <div class="card-body" style="padding: 0.5rem 0.7rem;">
+        <div class="step" id="step-{{ step.step_id }}" style="padding: 5px 15px">
+            <div class="card card-frame" style="box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%); border-radius: 15px;">
+                <div class="card-body" style="padding:7px 10px;">
 
-                    <div class="step-controls"
-                         style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0px;">
-                        <p style="margin-right: 20px;">Step {{ step.step_id }}</p>
-                        <div class="right-buttons" style="display: flex; gap: 10px;">
-                            <button type="button" class="move-up-button btn bg-gradient-secondary btn-sm btn-sma"
-                                    hx-post="{% url 'update_step_order' %}"
-                                    hx-vals='{"step_id": "{{ step.step_id }}", "direction": "up", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
-                                    hx-target="#step-list"
-                                    hx-swap="outerHTML"
-                                    {% if forloop.first %}disabled{% endif %}>
-                            <svg  width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                              <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
-                            </svg>
-                            </button>
 
-                            <button type="button" class="move-down-button btn bg-gradient-secondary btn-sm btn-sma"
-                                    hx-post="{% url 'update_step_order' %}"
-                                    hx-vals='{"step_id": "{{ step.step_id }}", "direction": "down", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
-                                    hx-target="#step-list"
-                                    hx-swap="outerHTML"
-                                    {% if forloop.last %}disabled{% endif %}>
-                            <svg  width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-                              <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
-                            </svg>
-                            </button>
+                    {#                    <blockquote class="blockquote text-white mb-0">#}
+                    <div class="table_control" style="display: flex; div:last-child ; margin-left: auto;
+}">
+                        <div style=" max-width: 60px;margin: 10px 12px">
+                            <br>
+                            <h4>{{ step.step_id }}</h4>
 
-                            <button type="button" class="delete-button btn bg-gradient-warning btn-sm btn-sma"
-                                    hx-post="{% url 'delete_step' step.step_id %}"
-                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-target="#step-list"
-                                    hx-swap="outerHTML">
-                                <svg  width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                </svg>
-                            </button>
-
-                            <button type="button" class="btn btn-primary bg-gradient-primary btn-sm btn-sma" 
-                                    onclick="loadStepData({{ step.step_id }})">
-                                <svg  width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable" viewBox="0 0 16 16">
-                                  <path d="M16 4.5a4.5 4.5 0 0 1-1.703 3.526L13 5l2.959-1.11q.04.3.041.61"/>
-                                  <path d="M11.5 9c.653 0 1.273-.139 1.833-.39L12 5.5 11 3l3.826-1.53A4.5 4.5 0 0 0 7.29 6.092l-6.116 5.096a2.583 2.583 0 1 0 3.638 3.638L9.908 8.71A4.5 4.5 0 0 0 11.5 9m-1.292-4.361-.596.893.809-.27a.25.25 0 0 1 .287.377l-.596.893.809-.27.158.475-1.5.5a.25.25 0 0 1-.287-.376l.596-.893-.809.27a.25.25 0 0 1-.287-.377l.596-.893-.809.27-.158-.475 1.5-.5a.25.25 0 0 1 .287.376M3 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
-                                </svg>
-                            </button>
                         </div>
-                    </div>
-{#                    <blockquote class="blockquote text-white mb-0">#}
                         <div class="table-responsive">
 
                             <!-- Buttons to collapse/expand columns -->
@@ -72,18 +35,22 @@
                                     <th class="group-command">Sub Command</th>
                                     <th class="group-command">Component</th>
                                     <th class="group-command">Packet</th>
-                                    <th class="seperator"></th>
+                                    <th class="seperator vertical-line"></th>
                                     <th class="group-value">Parameters</th>
                                     <th class="group-value">Operators</th>
                                     <th class="group-value">Value Manipulation</th>
                                     <th class="group-value">Fixed Value</th>
-                                    <th class="seperator"></th>
-                                    <th class="group-valueOptions">Min Value</th>
-                                    <th class="group-valueOptions">Max Value</th>
-                                    <th class="group-valueOptions">Resolution</th>
-                                    <th class="group-valueOptions">Resolution Value</th>
-                                    <th class="seperator"></th>
-                                    <th class="group-timing">Enum Value</th>
+                                    <th class="group-value">Min Value</th>
+                                    <th class="group-value">Max Value</th>
+                                    <th class="group-value">Resolution</th>
+                                    <th class="group-value">Resolution Value</th>
+                                    <th class="group-value">Enum Value</th>
+                                    <th class="seperator vertical-line"></th>
+                                    <th class="group-valueOptions">Value Tolerance</th>
+                                    <th class="group-valueOptions">Value Tolerance Value</th>
+                                    <th class="group-valueOptions">Time Tolerance</th>
+                                    <th class="group-valueOptions">Time Tolerance Value</th>
+                                    <th class="seperator vertical-line"></th>
                                     <th class="group-timing">At Time</th>
                                     <th class="group-timing">Delay</th>
                                     <th class="group-timing">Sync</th>
@@ -91,54 +58,113 @@
                                     <th class="group-timing">Length Minus</th>
                                     <th class="group-timing">Sequence Number</th>
                                     <th class="group-timing">Checksum</th>
-                                    <th class="group-timing">Value Tolerance</th>
-                                    <th class="group-timing">Value Tolerance Value</th>
-                                    <th class="group-timing">Time Tolerance</th>
-                                    <th class="group-timing">Time Tolerance Value</th>
+
                                     <th>Description</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="group-command" title="{{ step.environment }}">{{ step.environment }}</td>
-                                        <td class="group-command" title="{{ step.command }}">{{ step.command }}</td>
-                                        <td class="group-command" title="{{ step.sub_command }}">{{ step.sub_command }}</td>
-                                        <td class="group-command" title="{{ step.component }}">{{ step.component }}</td>
-                                        <td class="group-command" title="{{ step.packet }}">{{ step.packet }}</td>
-                                        <td class="seperator"></td>
-                                        <td class="group-value" title="{{ step.parameters }}">{{ step.parameters }}</td>
-                                        <td class="group-value" title="{{ step.operator }}">{{ step.operator }}</td>
-                                        <td class="group-value" title="{{ step.value_manipulation }}">{{ step.value_manipulation }}</td>
-                                        <td class="group-value" title="{{ step.fixed_value }}">{{ step.fixed_value }}</td>
-                                        <td class="seperator"></td>
-                                        <td class="group-valueOptions" title="{{ step.min_value }}">{{ step.min_value }}</td>
-                                        <td class="group-valueOptions" title="{{ step.max_value }}">{{ step.max_value }}</td>
-                                        <td class="group-valueOptions" title="{{ step.resolution }}">{{ step.resolution }}</td>
-                                        <td class="group-valueOptions" title="{{ step.resolution_value }}">{{ step.resolution_value }}</td>
-                                        <td class="seperator"></td>
-                                        <td class="group-timing" title="{{ step.enum_value }}">{{ step.enum_value }}</td>
-                                        <td class="group-timing" title="{{ step.at_time }}">{{ step.at_time }}</td>
-                                        <td class="group-timing" title="{{ step.delay }}">{{ step.delay }}</td>
-                                        <td class="group-timing" title="{{ step.frame_errors.sync }}">{{ step.frame_errors.sync }}</td>
-                                        <td class="group-timing" title="{{ step.frame_errors.length_plus }}">{{ step.frame_errors.length_plus }}</td>
-                                        <td class="group-timing" title="{{ step.frame_errors.length_minus }}">{{ step.frame_errors.length_minus }}</td>
-                                        <td class="group-timing" title="{{ step.frame_errors.sequence_number }}">{{ step.frame_errors.sequence_number }}</td>
-                                        <td class="group-timing" title="{{ step.frame_errors.checksum }}">{{ step.frame_errors.checksum }}</td>
-                                        <td class="group-timing" title="{{ step.value_tolerance }}">{{ step.value_tolerance }}</td>
-                                        <td class="group-timing" title="{{ step.value_tolerance_value }}">{{ step.value_tolerance_value }}</td>
-                                        <td class="group-timing" title="{{ step.time_tolerance }}">{{ step.time_tolerance }}</td>
-                                        <td class="group-timing" title="{{ step.time_tolerance_value }}">{{ step.time_tolerance_value }}</td>
-                                        <td title="{{ step.description }}">{{ step.description }}</td>
-                                    </tr>
+                                <tr>
+
+                                    <td class="group-command" title="{{ step.environment }}">{{ step.environment }}</td>
+                                    <td class="group-command" title="{{ step.command }}">{{ step.command }}</td>
+                                    <td class="group-command" title="{{ step.sub_command }}">{{ step.sub_command }}</td>
+                                    <td class="group-command" title="{{ step.component }}">{{ step.component }}</td>
+                                    <td class="group-command" title="{{ step.packet }}">{{ step.packet }}</td>
+                                    <td class="seperator vertical-line"></td>
+                                    <td class="group-value" title="{{ step.parameters }}">{{ step.parameters }}</td>
+                                    <td class="group-value" title="{{ step.operator }}">{{ step.operator }}</td>
+                                    <td class="group-value"
+                                        title="{{ step.value_manipulation }}">{{ step.value_manipulation }}</td>
+                                    <td class="group-value" title="{{ step.fixed_value }}">{{ step.fixed_value }}</td>
+                                    <td class="group-value" title="{{ step.min_value }}">{{ step.min_value }}</td>
+                                    <td class="group-value" title="{{ step.max_value }}">{{ step.max_value }}</td>
+                                    <td class="group-value" title="{{ step.resolution }}">{{ step.resolution }}</td>
+                                    <td class="group-value"
+                                        title="{{ step.resolution_value }}">{{ step.resolution_value }}</td>
+                                    <td class="group-value" title="{{ step.enum_value }}">{{ step.enum_value }}</td>
+                                    <td class="seperator vertical-line"></td>
+                                    <td class="group-valueOptions"
+                                        title="{{ step.value_tolerance }}">{{ step.value_tolerance }}</td>
+                                    <td class="group-valueOptions"
+                                        title="{{ step.value_tolerance_value }}">{{ step.value_tolerance_value }}</td>
+                                    <td class="group-valueOptions"
+                                        title="{{ step.time_tolerance }}">{{ step.time_tolerance }}</td>
+                                    <td class="group-valueOptions"
+                                        title="{{ step.time_tolerance_value }}">{{ step.time_tolerance_value }}</td>
+                                    <td class="seperator vertical-line"></td>
+                                    <td class="group-timing" title="{{ step.at_time }}">{{ step.at_time }}</td>
+                                    <td class="group-timing" title="{{ step.delay }}">{{ step.delay }}</td>
+                                    <td class="group-timing"
+                                        title="{{ step.frame_errors.sync }}">{{ step.frame_errors.sync }}</td>
+                                    <td class="group-timing"
+                                        title="{{ step.frame_errors.length_plus }}">{{ step.frame_errors.length_plus }}</td>
+                                    <td class="group-timing"
+                                        title="{{ step.frame_errors.length_minus }}">{{ step.frame_errors.length_minus }}</td>
+                                    <td class="group-timing"
+                                        title="{{ step.frame_errors.sequence_number }}">{{ step.frame_errors.sequence_number }}</td>
+                                    <td class="group-timing"
+                                        title="{{ step.frame_errors.checksum }}">{{ step.frame_errors.checksum }}</td>
+
+                                    <td title="{{ step.description }}">{{ step.description }}</td>
+                                </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div style="    padding-left: 10px;margin: 5px 0px 0px 10px;max-width: 110px;margin-left: auto;  ">
+                            <button type="button"
+                                    class="move-up-button btn bg-gradient-secondary btn-sm btn-sma"
+                                    hx-post="{% url 'update_step_order' %}"
+                                    hx-vals='{"step_id": "{{ step.step_id }}", "direction": "up", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                                    hx-target="#step-list"
+                                    hx-swap="outerHTML"
+                                    {#                                        style="    margin: 0px 10px 5px 10px;"#}
+                                    {% if forloop.first %}disabled{% endif %}>
+                                <svg width="16" height="16" fill="currentColor" class="bi bi-arrow-up"
+                                     viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-primary bg-gradient-primary btn-sm btn-sma"
+                                    onclick="loadStepData({{ step.step_id }})">
+                                <svg width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable"
+                                     viewBox="0 0 16 16">
+                                    <path d="M16 4.5a4.5 4.5 0 0 1-1.703 3.526L13 5l2.959-1.11q.04.3.041.61"/>
+                                    <path d="M11.5 9c.653 0 1.273-.139 1.833-.39L12 5.5 11 3l3.826-1.53A4.5 4.5 0 0 0 7.29 6.092l-6.116 5.096a2.583 2.583 0 1 0 3.638 3.638L9.908 8.71A4.5 4.5 0 0 0 11.5 9m-1.292-4.361-.596.893.809-.27a.25.25 0 0 1 .287.377l-.596.893.809-.27.158.475-1.5.5a.25.25 0 0 1-.287-.376l.596-.893-.809.27a.25.25 0 0 1-.287-.377l.596-.893-.809.27-.158-.475 1.5-.5a.25.25 0 0 1 .287.376M3 14a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+                                </svg>
+                            </button>
+
+
+                            <button type="button"
+                                    class="move-down-button btn bg-gradient-secondary btn-sm btn-sma"
+                                    hx-post="{% url 'update_step_order' %}"
+                                    hx-vals='{"step_id": "{{ step.step_id }}", "direction": "down", "csrfmiddlewaretoken": "{{ csrf_token }}"}'
+                                    hx-target="#step-list"
+                                    hx-swap="outerHTML"
+                                    {% if forloop.last %}disabled{% endif %}>
+                                <svg width="16" height="16" fill="currentColor" class="bi bi-arrow-down"
+                                     viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="delete-button btn bg-gradient-warning btn-sm btn-sma"
+                                    hx-post="{% url 'delete_step' step.step_id %}"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-target="#step-list"
+                                    hx-swap="outerHTML">
+                                <svg width="16" height="16" fill="currentColor" class="bi bi-trash3"
+                                     viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                </svg>
+                            </button>
 
                         </div>
-{#                    </blockquote>#}
 
+                    </div>
                 </div>
+
             </div>
         </div>
     {% endfor %}
 </div>
-

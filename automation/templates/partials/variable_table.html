@@ -1,0 +1,30 @@
+<div id="variable-table">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Variable Name</th>
+                <th>Data Type</th>
+                <th>Variable Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for variable in variables %}
+                <tr>
+                    <td>{{ variable.name }}</td>
+                    <td>{{ variable.data_type }}</td>
+                    <td>{{ variable.value }}</td>
+                    <td>
+                        <button class="btn bg-gradient-secondary btn-sm"
+                                hx-delete="{% url 'delete_variable' forloop.counter0 %}"
+                                hx-target="#variable-table"
+                                hx-swap="outerHTML"
+                                hx-vals='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
