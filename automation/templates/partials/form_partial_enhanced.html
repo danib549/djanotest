@@ -1,0 +1,455 @@
+<!-- form_partial_enhanced.html -->
+{% load custom_filters %}
+{% load static %}
+<form method="POST" id="script-form" style="overflow-x: hidden">
+    {% csrf_token %}
+    <h3>Test Creation</h3>
+    <div class="card-group" style="padding: 10px 20px;">
+        <div class="card"
+             style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+
+            <div class="card-body pt-2">
+                <h3>Command</h3>
+
+                <div>
+                    <label for="{{ form.environment.id_for_label }}">{{ form.environment.label }}</label>
+                    {{ form.environment|add_class:"form-control" }}
+                    {{ form.environment.errors }}
+                </div>
+
+                <!-- Command Field -->
+                <div>
+                    <label for="{{ form.command.id_for_label }}">{{ form.command.label }}</label>
+                    {{ form.command|add_class:"form-control" }}
+                    {{ form.command.errors }}
+                </div>
+
+                <!-- Sub Command Field -->
+                <div>
+                    <label for="{{ form.sub_command.id_for_label }}">{{ form.sub_command.label }}</label>
+                    {{ form.sub_command|add_class:"form-control" }}
+                    {{ form.sub_command.errors }}
+                </div>
+
+                <!-- Component Field -->
+                <div>
+                    <label for="{{ form.component.id_for_label }}">{{ form.component.label }}</label>
+                    {{ form.component|add_class:"form-control" }}
+                    {{ form.component.errors }}
+                </div>
+
+                <!-- Packet Field -->
+                <div>
+                    <label for="{{ form.packet.id_for_label }}">{{ form.packet.label }}</label>
+                    {{ form.packet|add_class:"form-control" }}
+                    {{ form.packet.errors }}
+                </div>
+                <div>
+                    <label for="{{ form.transmition_line.id_for_label }}">{{ form.transmition_line.label }}</label>
+                    {{ form.transmition_line|add_class:"form-control" }}
+                    {{ form.transmition_line.errors }}
+                </div>
+                {{ form.step_id }}
+                <br>
+                <br>
+            </div>
+        </div>
+        
+        <!-- Parameter Configuration Section - Dynamic based on Environment -->
+        <div class="card"
+             style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+            <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                <h3>Parameter Configuration</h3>
+            </div>
+            <div class="card-body pt-2">
+                <!-- Environment 1: Single Parameter Selection -->
+                <div id="env1-parameters" style="display: none;">
+                    <div>
+                        <label for="selected_parameter">Select Parameter</label>
+                        <select id="selected_parameter" name="selected_parameter" class="form-control">
+                            <option value="">-- Select Parameter --</option>
+                            <option value="param_1">Parameter 1</option>
+                            <option value="param_2">Parameter 2</option>
+                            <option value="param_3">Parameter 3</option>
+                        </select>
+                    </div>
+                    <div class="mt-3">
+                        <label for="parameter_value">Parameter Value</label>
+                        <input type="number" id="parameter_value" name="parameter_value" class="form-control" step="any">
+                    </div>
+                    <div class="mt-3">
+                        <label for="expected_value">Expected Value</label>
+                        <input type="number" id="expected_value" name="expected_value" class="form-control" step="any">
+                    </div>
+                </div>
+
+                <!-- Environment 2: Multiple Configurable Parameters -->
+                <div id="env2-parameters" style="display: none;">
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-sm bg-gradient-info" onclick="addParameterRow()">
+                            <i class="fa fa-plus"></i> Add Parameter
+                        </button>
+                    </div>
+                    <div id="parameter-rows">
+                        <!-- Dynamic parameter rows will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card"
+             style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+            <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                <h3>Value options</h3>
+            </div>
+
+            <div class="card-body pt-2 ">
+
+                <div>
+                    <label for="{{ form.value_tolerance.id_for_label }}">{{ form.value_tolerance.label }}</label>
+                    {{ form.value_tolerance|add_class:"form-control" }}
+                    {{ form.value_tolerance.errors }}
+                </div>
+
+                <!-- Value Tolerance Value Field -->
+                <div>
+                    <label for="{{ form.value_tolerance_value.id_for_label }}">{{ form.value_tolerance_value.label }}</label>
+                    {{ form.value_tolerance_value|add_class:"form-control" }}
+                    {{ form.value_tolerance_value.errors }}
+                </div>
+
+                <!-- Time Tolerance Field -->
+                <div>
+                    <label for="{{ form.time_tolerance.id_for_label }}">{{ form.time_tolerance.label }}</label>
+                    {{ form.time_tolerance|add_class:"form-control" }}
+                    {{ form.time_tolerance.errors }}
+                </div>
+
+                <!-- Time Tolerance Value Field -->
+                <div>
+                    <label for="{{ form.time_tolerance_value.id_for_label }}">{{ form.time_tolerance_value.label }}</label>
+                    {{ form.time_tolerance_value|add_class:"form-control" }}
+                    {{ form.time_tolerance_value.errors }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card"
+             style="margin-left: 20px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;border-bottom-right-radius: 0rem;border-top-right-radius: 0rem;box-shadow: 0 20px 27px 0 rgb(0 0 0 / 13%);">
+            <div class="card-body pt-2">
+                <h3>Timing & Errors</h3>
+                <div>
+                    <label for="{{ form.at_time.id_for_label }}">{{ form.at_time.label }}</label>
+                    {{ form.at_time|add_class:"form-control" }}
+                    {{ form.at_time.errors }}
+                </div>
+
+                <!-- Delay Field -->
+                <div>
+                    <label for="{{ form.delay.id_for_label }}">{{ form.delay.label }}</label>
+                    {{ form.delay|add_class:"form-control" }}
+                    {{ form.delay.errors }}
+                </div>
+                <br>
+                <hr class="horizontal dark mt-0">
+                <h4>Frame Errors</h4>
+                <!-- Sync Field -->
+                <div class="form-check form-switch">
+                    <label for="{{ form.sync.id_for_label }}">{{ form.sync.label }}</label>
+                    {{ form.sync|add_class:"form-check-input" }}
+                    {{ form.sync.errors }}
+                </div>
+
+                <!-- Length Plus Field -->
+                <div class="form-check form-switch">
+                    <label for="{{ form.length_plus.id_for_label }}">{{ form.length_plus.label }}</label>
+                    {{ form.length_plus|add_class:"form-check-input" }}
+                    {{ form.length_plus.errors }}
+                </div>
+
+                <!-- Length Minus Field -->
+                <div class="form-check form-switch">
+                    <label for="{{ form.length_minus.id_for_label }}">{{ form.length_minus.label }}</label>
+                    {{ form.length_minus|add_class:"form-check-input" }}
+                    {{ form.length_minus.errors }}
+                </div>
+
+                <!-- Sequence Number Field -->
+                <div class="form-check form-switch">
+                    <label for="{{ form.sequence_number.id_for_label }}">{{ form.sequence_number.label }}</label>
+                    {{ form.sequence_number|add_class:"form-check-input" }}
+                    {{ form.sequence_number.errors }}
+                </div>
+
+                <!-- Checksum Field -->
+                <div class="form-check form-switch">
+                    <label for="{{ form.checksum.id_for_label }}">{{ form.checksum.label }}</label>
+                    {{ form.checksum|add_class:"form-check-input" }}
+                    {{ form.checksum.errors }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br>
+    <div class="row" style="padding:0 20px">
+        <div class="col">
+            <div class="card card-plain">
+                <div class="card-body">
+                    <div>
+                        <label for="{{ form.description.id_for_label }}">
+                            <h4>{{ form.description.label }}</h4></label>
+                        {{ form.description|add_class:"form-control" }}
+                        {{ form.description.errors }}
+                    </div>
+                    <br>
+                    <div class="step-controls">
+                        <div class="right-buttons" style="display: flex; gap: 10px;">
+                            <button name="action" value="save" type="submit"
+                                    class="btn bg-gradient-secondary btn-md">
+                                Save Script
+                            </button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#Pop_up_parameters_table"
+                                    class="btn parameters-btn bg-gradient-secondary btn-lg">
+                                Parameters table
+                            </button>
+                            <button id="action-button" hx-post="{% url 'create_script' %}"
+                                    hx-target="#script-list"
+                                    hx-replace="outerHTML"
+                                    type="submit" class="btn bg-gradient-primary btn-lg">Add Step
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Parameter Row Template for Environment 2 -->
+<template id="parameter-row-template">
+    <div class="parameter-row card mb-3 p-3" data-index="{index}">
+        <div class="row">
+            <div class="col-md-3">
+                <label>Parameter Name</label>
+                <select name="param_name_{index}" class="form-control param-name-select">
+                    <option value="">-- Select --</option>
+                    <option value="param_1">Parameter 1</option>
+                    <option value="param_2">Parameter 2</option>
+                    <option value="param_3">Parameter 3</option>
+                    <option value="param_4">Parameter 4</option>
+                    <option value="param_5">Parameter 5</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label>Value Manipulation</label>
+                <select name="value_manipulation_{index}" class="form-control value-manipulation-select" onchange="toggleValueFields(this, {index})">
+                    <option value="no-change">No Change</option>
+                    <option value="fixed">Fixed Value</option>
+                    <option value="random">Random Value</option>
+                    <option value="enum">Enum</option>
+                    <option value="parameters">Parameters</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Operator</label>
+                <select name="operator_{index}" class="form-control">
+                    <option value="=">=</option>
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="value-fields-{index}">
+                    <label>Value</label>
+                    <input type="number" name="value_{index}" class="form-control" step="any">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-danger mt-4" onclick="removeParameterRow(this)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Additional fields for specific value manipulations -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div id="additional-fields-{index}" style="display: none;">
+                    <!-- Fixed Value -->
+                    <div class="fixed-value-fields" style="display: none;">
+                        <label>Fixed Value</label>
+                        <input type="number" name="fixed_value_{index}" class="form-control" step="any">
+                    </div>
+                    
+                    <!-- Random Value -->
+                    <div class="random-value-fields" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Min Value</label>
+                                <input type="number" name="min_value_{index}" class="form-control" step="any">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Max Value</label>
+                                <input type="number" name="max_value_{index}" class="form-control" step="any">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Resolution</label>
+                                <input type="number" name="resolution_value_{index}" class="form-control" step="any">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enum Value -->
+                    <div class="enum-value-fields" style="display: none;">
+                        <label>Enum Values (comma-separated)</label>
+                        <input type="text" name="enum_value_{index}" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+let parameterIndex = 0;
+
+// Environment selection handler
+document.getElementById('id_environment').addEventListener('change', function() {
+    const env1Params = document.getElementById('env1-parameters');
+    const env2Params = document.getElementById('env2-parameters');
+    
+    if (this.value === 'option_111111111111111111111111111111111111111111') { // Environment 1
+        env1Params.style.display = 'block';
+        env2Params.style.display = 'none';
+        // Clear env2 parameters
+        document.getElementById('parameter-rows').innerHTML = '';
+    } else if (this.value === 'option_2') { // Environment 2
+        env1Params.style.display = 'none';
+        env2Params.style.display = 'block';
+        // Add initial parameter row if none exists
+        if (document.getElementById('parameter-rows').children.length === 0) {
+            addParameterRow();
+        }
+    } else {
+        env1Params.style.display = 'none';
+        env2Params.style.display = 'none';
+    }
+});
+
+// Add parameter row for Environment 2
+function addParameterRow() {
+    parameterIndex++;
+    const template = document.getElementById('parameter-row-template').innerHTML;
+    const html = template.replace(/{index}/g, parameterIndex);
+    
+    const container = document.getElementById('parameter-rows');
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    container.appendChild(div.firstElementChild);
+    
+    // Initialize Choices.js for new selects if available
+    if (typeof Choices !== 'undefined') {
+        const newRow = container.lastElementChild;
+        newRow.querySelectorAll('select').forEach(select => {
+            if (!select.hasAttribute('data-choice')) {
+                new Choices(select);
+            }
+        });
+    }
+}
+
+// Remove parameter row
+function removeParameterRow(button) {
+    button.closest('.parameter-row').remove();
+}
+
+// Toggle value fields based on manipulation type
+function toggleValueFields(select, index) {
+    const additionalFields = document.getElementById(`additional-fields-${index}`);
+    const fixedFields = additionalFields.querySelector('.fixed-value-fields');
+    const randomFields = additionalFields.querySelector('.random-value-fields');
+    const enumFields = additionalFields.querySelector('.enum-value-fields');
+    
+    // Hide all fields first
+    fixedFields.style.display = 'none';
+    randomFields.style.display = 'none';
+    enumFields.style.display = 'none';
+    additionalFields.style.display = 'none';
+    
+    // Show relevant fields
+    switch(select.value) {
+        case 'fixed':
+            additionalFields.style.display = 'block';
+            fixedFields.style.display = 'block';
+            break;
+        case 'random':
+            additionalFields.style.display = 'block';
+            randomFields.style.display = 'block';
+            break;
+        case 'enum':
+            additionalFields.style.display = 'block';
+            enumFields.style.display = 'block';
+            break;
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Trigger environment change to set initial state
+    const envSelect = document.getElementById('id_environment');
+    if (envSelect && envSelect.value) {
+        envSelect.dispatchEvent(new Event('change'));
+    }
+});
+
+// Function to load step data for editing
+function loadStepForEdit(stepData) {
+    // Clear existing parameter rows
+    document.getElementById('parameter-rows').innerHTML = '';
+    
+    if (stepData.environment === 'option_2') { // Environment 2
+        // Load multiple parameters
+        let idx = 1;
+        for (const [paramName, paramConfig] of Object.entries(stepData.parameters || {})) {
+            addParameterRow();
+            const row = document.querySelector(`[data-index="${parameterIndex}"]`);
+            
+            // Set parameter name
+            row.querySelector(`[name="param_name_${parameterIndex}"]`).value = paramName;
+            
+            // Set parameter configuration
+            for (const [key, value] of Object.entries(paramConfig)) {
+                const input = row.querySelector(`[name="${key}_${parameterIndex}"]`);
+                if (input) {
+                    input.value = value;
+                }
+            }
+            idx++;
+        }
+    } else if (stepData.environment === 'option_111111111111111111111111111111111111111111') { // Environment 1
+        // Load single parameter
+        if (stepData.selected_parameter) {
+            document.getElementById('selected_parameter').value = stepData.selected_parameter;
+            document.getElementById('parameter_value').value = stepData.parameter_value || '';
+            document.getElementById('expected_value').value = stepData.expected_value || '';
+        }
+    }
+}
+</script>
+
+<style>
+    #id_description {
+        height: 90px;
+    }
+    .btn-lg {
+        margin-left: 10px;
+    }
+    .parameter-row {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+</style>
