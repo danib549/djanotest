@@ -19,6 +19,7 @@ class Script_db_Manager:
 
     def save_script(self, script_steps):
         print("project id :",self.project.id)
+
         script_content = {
             'project': self.project.name,
             'steps': script_steps

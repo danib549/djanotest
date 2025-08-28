@@ -1,0 +1,47 @@
+<!-- Modal Structure -->
+<div class="modal fade" id="Pop_up_parameters_table" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+        <form hx-post="{% url 'add_variable' %}" hx-target="#variable-table" hx-swap="innerHTML" id="add-variable-form" style="flex: auto">
+            {% csrf_token %}
+            <!-- Form fields -->
+            <div>
+            <label for="var_name">Variable Name:</label>
+            <input type="text" id="var_name" name="var_name" required class="form-control">
+            </div>
+            <div>
+            <label for="data_type">Data Type:</label>
+            <select id="data_type" name="data_type" required class="form-control">
+                <option value="int8">int8</option>
+                <option value="int16">int16</option>
+                <option value="int32">int32</option>
+                <option value="int64">int64</option>
+                <option value="float32">float32</option>
+                <option value="float64">float64</option>
+                <option value="String256">String-256</option>
+            </select>
+        </div>
+            <div>
+
+
+            <label for="var_value">Variable Value:</label>
+            <input type="text" id="var_value" name="var_value" required class="form-control">
+        </div>
+            <br>
+            <button type="submit" class="btn parameters-btn bg-gradient-secondary ">Add Variable</button>
+        </form>
+
+        {% include 'partials/variable_table.html' %}
+
+            </div>
+        </div>
+    </div>
+</div>
