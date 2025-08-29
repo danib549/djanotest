@@ -414,7 +414,17 @@ class ScriptDataManager:
 
         # The DB manager expects a ScriptData instance
         db_manager = Script_db_Manager(script_data_instance, project)
-        db_manager.save_script_to_db(meta.get('editing_script_id'))
+        
+        # Pass user and test_name for new scripts
+        script_id = db_manager.save_script_to_db(
+            editing_script_id=meta.get('editing_script_id'),
+            user=user,
+            test_name=script_data_dict.get('test_name')
+        )
+        
+        # Store the script_id in meta for future edits if it's a new script
+        if not meta.get('editing_script_id'):
+            self.update_meta(editing_script_id=script_id)
 
         self.clear_script_session()
 

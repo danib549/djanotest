@@ -358,7 +358,7 @@ def load_script(request):
 
     return redirect('script_list')
 
-def get_script_versions(request):
+def get_script_versions(request, script_id):
     script_id = request.GET.get('script_id')
     try:
         script = get_object_or_404(Script, id=script_id, user=request.user)

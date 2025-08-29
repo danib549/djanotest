@@ -72,19 +72,53 @@ class Script_db_Manager:
                 );
             """)
 
-    def save_script_to_db(self,encrypted_data):
-        if self.script.script_version == 0:
-            self.script.script_version = 1
+    def save_script_to_db(self, editing_script_id=None, user=None, test_name=None):
+        from .models import Script  # Import here to avoid circular import
+        
+        # If we have an existing script ID, load it; otherwise create a new one
+        if editing_script_id:
+            # Load existing script
+            script_obj = Script.objects.get(id=editing_script_id)
         else:
-            self.script.script_version += 1
-        self.script.save()
-        print("script version :" , self.script.script_version)
+            # Create new Script model instance for first save
+            if not user or not test_name:
+                # Try to extract from ScriptData if available
+                test_name = getattr(self.script, 'test_name', 'Untitled Script')
+                if not user:
+                    raise ValueError("User must be provided for new script creation")
+            
+            script_obj = Script(
+                user=user,
+                project=self.project,
+                test_name=test_name,
+                script_version=0
+            )
+        
+        # Increment version
+        if script_obj.script_version == 0:
+            script_obj.script_version = 1
+        else:
+            script_obj.script_version += 1
+        
+        # Save the Script model
+        script_obj.save()
+        print("script version:", script_obj.script_version)
+        
+        # Encrypt the script data
+        encrypted_data = self.encrypt_data({
+            'project': self.project.name,
+            'steps': self.script.to_dict() if hasattr(self.script, 'to_dict') else self.script
+        })
+        
+        # Save to version table
         table_name = f"project_{self.project.id}_scriptversion"
         with connection.cursor() as cursor:
             cursor.execute(f"""
                 INSERT INTO {table_name} (script_id, version_number, script_data, created_at)
                 VALUES (%s, %s, %s, CURRENT_TIMESTAMP);
-            """, [self.script.id, self.script.script_version, encrypted_data])
+            """, [script_obj.id, script_obj.script_version, encrypted_data])
+        
+        return script_obj.id  # Return the script ID for future edits
         
     def get_script_versions(self):
 
