@@ -45,6 +45,7 @@ class ScriptDataManager:
     def save_script_data(self, script_data: Dict[str, Any]):
         """Saves the script data dictionary to the session."""
         # Data is stored directly as a dictionary.
+        print(script_data)
         self.session[SESSION_SCRIPT_KEY] = script_data
         self.session.modified = True
 
@@ -151,51 +152,40 @@ class ScriptDataManager:
         }
         new_step_dict['frame_errors'] = frame_errors
 
-        # Process parameters based on environment
-        environment = new_step_dict.get('environment', '1')
-        parameters_dict = {}
+        # Process parameters - now handling JSON from the new parameter configuration modal
+        parameters_json = new_step_dict.pop('parameters_json', '{}')
+        try:
+            import json
+            parameters_dict = json.loads(parameters_json) if parameters_json else {}
+        except (json.JSONDecodeError, TypeError):
+            parameters_dict = {}
         
-        if environment == '2':
-            # For environment 2, handle multiple configurable parameters
-            # Extract parameter configurations from form data
-            param_names = []
-            for key in list(new_step_dict.keys()):
-                if key.startswith('param_name_'):
-                    param_names.append(key)
-            
-            for param_key in param_names:
-                index = param_key.split('_')[-1]
-                param_name = new_step_dict.pop(param_key, '')
-                
-                if param_name:
-                    param_config = {
-                        'value_manipulation': new_step_dict.pop(f'value_manipulation_{index}', 'no-change'),
-                        'min_value': new_step_dict.pop(f'min_value_{index}', None),
-                        'max_value': new_step_dict.pop(f'max_value_{index}', None),
-                        'resolution': new_step_dict.pop(f'resolution_{index}', None),
-                        'resolution_value': new_step_dict.pop(f'resolution_value_{index}', None),
-                        'fixed_value': new_step_dict.pop(f'fixed_value_{index}', None),
-                        'enum_value': new_step_dict.pop(f'enum_value_{index}', None),
-                        'operator': new_step_dict.pop(f'operator_{index}', '='),
-                        'value_tolerance': new_step_dict.pop(f'value_tolerance_{index}', None),
-                        'value_tolerance_value': new_step_dict.pop(f'value_tolerance_value_{index}', None),
-                        'value': new_step_dict.pop(f'value_{index}', None),
-                        'expected_value': new_step_dict.pop(f'expected_value_{index}', None),
-                        'min_accepted_value': new_step_dict.pop(f'min_accepted_value_{index}', None),
-                        'max_accepted_value': new_step_dict.pop(f'max_accepted_value_{index}', None),
-                    }
-                    parameters_dict[param_name] = param_config
-        else:
-            # For environment 1, single parameter selection
-            selected_param = new_step_dict.pop('selected_parameter', None)
-            if selected_param:
-                # Create a simple parameter config for the selected parameter
-                param_config = {
-                    'value_manipulation': 'no-change',
-                    'value': new_step_dict.pop('parameter_value', None),
-                    'expected_value': new_step_dict.pop('expected_value', None),
-                }
-                parameters_dict[selected_param] = param_config
+        # Process each parameter configuration to ensure all fields are present
+        for param_id, config in parameters_dict.items():
+            # Ensure each parameter has all the individual fields
+            processed_config = {
+                'parameter_id': config.get('parameter_id', param_id),
+                'operator': config.get('operator', '+'),
+                'value_manipulation': config.get('value_manipulation', 'no-change'),
+                # Value Options
+                'value_options': config.get('value_options', ''),
+                'fixed_value': config.get('fixed_value', None),
+                'min_value': config.get('min_value', None),
+                'max_value': config.get('max_value', None),
+                'resolution': config.get('resolution', None),
+                'resolution_value': config.get('resolution_value', None),
+                'enum_value': config.get('enum_value', None),
+                'table_parameters': config.get('table_parameters', None),
+                # Value Tolerance
+                'value_tolerance': config.get('value_tolerance', None),
+                'percentage': config.get('percentage', None),
+                'value_tolerance_value': config.get('value_tolerance_value', None),
+                # Time Tolerance
+                'time_tolerance': config.get('time_tolerance', None),
+                'time_to_reach_value': config.get('time_to_reach_value', None),
+                'time_tolerance_value': config.get('time_tolerance_value', None),
+            }
+            parameters_dict[param_id] = processed_config
 
         new_step_dict['parameters'] = parameters_dict
 

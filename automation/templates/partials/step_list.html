@@ -71,17 +71,51 @@
                                     <td class="group-command" title="{{ step.component }}">{{ step.component }}</td>
                                     <td class="group-command" title="{{ step.packet }}">{{ step.packet }}</td>
                                     <td class="seperator vertical-line"></td>
-                                    <td class="group-value" title="{{ step.parameters }}">{{ step.parameters }}</td>
-                                    <td class="group-value" title="{{ step.operator }}">{{ step.operator }}</td>
-                                    <td class="group-value"
-                                        title="{{ step.value_manipulation }}">{{ step.value_manipulation }}</td>
-                                    <td class="group-value" title="{{ step.fixed_value }}">{{ step.fixed_value }}</td>
-                                    <td class="group-value" title="{{ step.min_value }}">{{ step.min_value }}</td>
-                                    <td class="group-value" title="{{ step.max_value }}">{{ step.max_value }}</td>
-                                    <td class="group-value" title="{{ step.resolution }}">{{ step.resolution }}</td>
-                                    <td class="group-value"
-                                        title="{{ step.resolution_value }}">{{ step.resolution_value }}</td>
-                                    <td class="group-value" title="{{ step.enum_value }}">{{ step.enum_value }}</td>
+                                    <td class="group-value" title="{% for param_name, param_config in step.parameters.items %}{{ param_name }}: {{ param_config.value }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {{ param_name }}{% if param_config.value %}: {{ param_config.value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {{ param_config.operator|default:"=" }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {{ param_config.value_manipulation|default:"no-change" }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.fixed_value %}{{ param_config.fixed_value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.min_value %}{{ param_config.min_value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.max_value %}{{ param_config.max_value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.resolution %}{{ param_config.resolution }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.resolution_value %}{{ param_config.resolution_value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td class="group-value">
+                                        {% for param_name, param_config in step.parameters.items %}
+                                            {% if param_config.enum_value %}{{ param_config.enum_value }}{% endif %}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
                                     <td class="seperator vertical-line"></td>
                                     <td class="group-valueOptions"
                                         title="{{ step.value_tolerance }}">{{ step.value_tolerance }}</td>

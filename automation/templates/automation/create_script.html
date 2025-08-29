@@ -19,6 +19,10 @@
 
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet"/>
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 
 </head>
 <body class="g-sidenav-show bg-gray-100">
@@ -27,7 +31,7 @@
 
 <main class="main-content position-relative border-radius-lg ">
         <br>
-    {% include 'partials/form_partial.html' %}
+    {% include 'partials/form_partial_enhanced.html' %}
     {% include 'partials/custom_parameters_table.html' with variables=variables  %}
     <h2>Steps</h2>
     <div id="script-list">
@@ -37,6 +41,11 @@
 
 <script src="{% static 'js/core/popper.min.js' %}"></script>
 <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+
+<!-- jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
 <script src="{% static 'js/plugins/smooth-scrollbar.min.js' %}"></script>
@@ -154,32 +163,23 @@ document.addEventListener('htmx:afterRequest', function (event) {
                     alert(data.error);
                     console.error('Error loading step:', data.error);
                 } else {
+                    // Set basic form fields
                     document.getElementById('id_step_id').value = data.step_id || '';
                     updateSelectValue('id_environment', data.environment);
-                    updateSelectValue('id_command', data.environment);
+                    updateSelectValue('id_command', data.command);
                     updateSelectValue('id_sub_command', data.sub_command);
                     updateSelectValue('id_component', data.component);
                     updateSelectValue('id_packet', data.packet);
-                    updateSelectValue('id_parameters', data.parameters);
-                    updateSelectValue('id_operator', data.operator);
-                    updateSelectValue('id_value_manipulation', data.value_manipulation);
-                    updateSelectValue('id_resolution', data.resolution);
+                    updateSelectValue('id_transmition_line', data.transmition_line);
                     updateSelectValue('id_value_tolerance', data.value_tolerance);
                     updateSelectValue('id_time_tolerance', data.time_tolerance);
-                    {#choicesEnvironment.setChoiceByValue(data.environment || '');#}
+                    
                     document.getElementById('id_environment').value = data.environment || '';
                     document.getElementById('id_command').value = data.command || '';
                     document.getElementById('id_sub_command').value = data.sub_command || '';
                     document.getElementById('id_component').value = data.component || '';
                     document.getElementById('id_packet').value = data.packet || '';
-                    document.getElementById('id_parameters').value = data.parameters || '';
-                    document.getElementById('id_value_manipulation').value = data.value_manipulation || '';
-                    document.getElementById('id_fixed_value').value = data.fixed_value || '';
-                    document.getElementById('id_min_value').value = data.min_value || '';
-                    document.getElementById('id_max_value').value = data.max_value || '';
-                    document.getElementById('id_resolution').value = data.resolution || '';
-                    document.getElementById('id_resolution_value').value = data.resolution_value || '';
-                    document.getElementById('id_enum_value').value = data.enum_value || '';
+                    document.getElementById('id_transmition_line').value = data.transmition_line || '';
                     document.getElementById('id_at_time').value = data.at_time || '';
                     document.getElementById('id_delay').value = data.delay || '';
                     document.getElementById('id_value_tolerance').value = data.value_tolerance || '';
@@ -188,16 +188,19 @@ document.addEventListener('htmx:afterRequest', function (event) {
                     document.getElementById('id_time_tolerance_value').value = data.time_tolerance_value || '';
                     document.getElementById('id_description').value = data.description || '';
 
+                    // Set frame error checkboxes
+                    document.getElementById('id_sync').checked = data.sync || false;
+                    document.getElementById('id_length_plus').checked = data.length_plus || false;
+                    document.getElementById('id_length_minus').checked = data.length_minus || false;
+                    document.getElementById('id_sequence_number').checked = data.sequence_number || false;
+                    document.getElementById('id_checksum').checked = data.checksum || false;
 
-                    document.getElementById('id_sync').checked = data.frame_errors.sync || false;
-                    document.getElementById('id_length_plus').checked = data.frame_errors.length_plus || false;
-                    document.getElementById('id_length_minus').checked = data.frame_errors.length_minus || false;
-                    document.getElementById('id_sequence_number').checked = data.frame_errors.sequence_number || false;
-                    document.getElementById('id_checksum').checked = data.frame_errors.checksum || false;
+                    // Call the enhanced parameter loading function
+                    if (typeof loadStepForEdit === 'function') {
+                        loadStepForEdit(data);
+                    }
 
                     console.log('Form fields populated with step data:', data);
-                    toggleValueManipulationFields();
-
                     updateFormMode(true);
                 }
             })
