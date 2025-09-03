@@ -62,22 +62,119 @@
                 <h3>Parameter Configuration</h3>
             </div>
             <div class="card-body pt-2">
-                <!-- Button to open parameter configuration modal -->
-                <div class="mb-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#parameterConfigModal" onclick="onPacketSelected()">
-                        <i class="fa fa-plus"></i> Configure Parameter
-                    </button>
-                </div>
-                
-                <!-- Display configured parameters -->
-                <div id="configured-parameters-display">
-                    <h5>Configured Parameters</h5>
-                    <div id="parameters-list" class="mt-2">
-                        <p class="text-muted">No parameters configured yet</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="parameter-select" class="form-label">Search Parameter</label>
+                            <select id="parameter-select" class="form-control">
+                                <option value="">-- Select Parameter --</option>
+                            </select>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addParameter()">
+                                <i class="fa fa-plus"></i> Add
+                            </button>
+                        </div>
+                        <ul id="parameters-list" class="list-group">
+                            <li class="list-group-item text-muted">No parameters added</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-8">
+                        <form id="parameter-config-form" style="display:none;">
+                            <input type="hidden" id="current-parameter">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="operator" class="form-label">Operator</label>
+                                    <select id="operator" class="form-control">
+                                        <option value="+">+</option>
+                                        <option value="-">-</option>
+                                        <option value="*">*</option>
+                                        <option value="/">/</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="value_manipulation" class="form-label">Value Manipulation</label>
+                                    <select id="value_manipulation" class="form-control">
+                                        <option value="no-change">No Change</option>
+                                        <option value="fixed">Fixed Value</option>
+                                        <option value="random">Random Value</option>
+                                        <option value="enum">Enum</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="min_value" class="form-label">Min Value</label>
+                                    <input type="number" step="any" id="min_value" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="max_value" class="form-label">Max Value</label>
+                                    <input type="number" step="any" id="max_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="resolution" class="form-label">Resolution</label>
+                                    <select id="resolution" class="form-control">
+                                        <option value="">--</option>
+                                        <option value="percentage">Percentage</option>
+                                        <option value="fixed">Fixed Time</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="resolution_value" class="form-label">Resolution Value</label>
+                                    <input type="number" step="any" id="resolution_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="fixed_value" class="form-label">Fixed Value</label>
+                                    <input type="number" step="any" id="fixed_value" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="enum_value" class="form-label">Enum Value</label>
+                                    <input type="text" id="enum_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="value_tolerance" class="form-label">Value Tolerance</label>
+                                    <select id="value_tolerance" class="form-control">
+                                        <option value="">None</option>
+                                        <option value="percentage">Percentage</option>
+                                        <option value="fixed">Fixed Value</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="value_tolerance_value" class="form-label">Value Tolerance Value</label>
+                                    <input type="number" step="any" id="value_tolerance_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="value" class="form-label">Value</label>
+                                    <input type="number" step="any" id="value" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="expected_value" class="form-label">Expected Value</label>
+                                    <input type="number" step="any" id="expected_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="min_accepted_value" class="form-label">Min Accepted Value</label>
+                                    <input type="number" step="any" id="min_accepted_value" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="max_accepted_value" class="form-label">Max Accepted Value</label>
+                                    <input type="number" step="any" id="max_accepted_value" class="form-control">
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-success" onclick="saveParameterConfig()">Save</button>
+                                <button type="button" class="btn btn-danger" onclick="removeParameterConfig()">Remove</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                
-                <!-- Hidden field to store parameters JSON -->
                 <input type="hidden" id="parameters_json" name="parameters_json" value="{}">
             </div>
         </div>
@@ -194,154 +291,149 @@
     </div>
 </form>
 
-<!-- Include Parameter Configuration Modal -->
-{% include 'partials/parameter_config_modal.html' %}
-
 <script>
-// Store configured parameters globally
 let configuredParametersData = {};
+let currentParameterId = null;
 
-// Update the display when parameters are configured
-function updateParametersDisplay() {
-    const listContainer = document.getElementById('parameters-list');
-    listContainer.innerHTML = '';
-    
-    if (Object.keys(configuredParametersData).length === 0) {
-        listContainer.innerHTML = '<p class="text-muted">No parameters configured yet</p>';
+function addParameter() {
+    const select = document.getElementById('parameter-select');
+    const paramId = select.value;
+    const paramName = select.options[select.selectedIndex]?.text;
+    if (!paramId) {
+        alert('Select a parameter');
         return;
     }
-    
-    const list = document.createElement('div');
-    list.className = 'list-group';
-    
-    Object.entries(configuredParametersData).forEach(([paramId, config]) => {
-        const item = document.createElement('div');
-        item.className = 'list-group-item d-flex justify-content-between align-items-center';
-        
-        const paramText = document.createElement('span');
-        let displayText = `<strong>${config.parameter_id}</strong>`;
-        
-        if (config.value_manipulation) {
-            displayText += ` - ${config.value_manipulation}`;
+    if (!configuredParametersData[paramId]) {
+        configuredParametersData[paramId] = {};
+        const list = document.getElementById('parameters-list');
+        if (list.children.length && list.children[0].classList.contains('text-muted')) {
+            list.innerHTML = '';
         }
-        if (config.operator) {
-            displayText += ` (${config.operator})`;
-        }
-        if (config.value_options) {
-            displayText += ` - Options: ${config.value_options}`;
-        }
-        
-        paramText.innerHTML = displayText;
-        
-        const actions = document.createElement('div');
-        actions.innerHTML = `
-            <button type="button" class="btn btn-sm btn-info" onclick="editParameterConfig('${paramId}')">
-                <i class="fa fa-edit"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-danger" onclick="removeParameterConfig('${paramId}')">
-                <i class="fa fa-trash"></i>
-            </button>
-        `;
-        
-        item.appendChild(paramText);
-        item.appendChild(actions);
+        const item = document.createElement('li');
+        item.className = 'list-group-item';
+        item.id = `param-item-${paramId}`;
+        item.textContent = paramName;
+        item.onclick = () => loadParameterConfig(paramId);
         list.appendChild(item);
-    });
-    
-    listContainer.appendChild(list);
-    
-    // Update hidden JSON field
+    }
+    select.value = '';
     document.getElementById('parameters_json').value = JSON.stringify(configuredParametersData);
 }
 
-// Override the saveParameterConfig from modal to update main form
-const originalSaveParameterConfig = window.saveParameterConfig;
-window.saveParameterConfig = function() {
-    const formData = new FormData(document.getElementById('parameter-config-form'));
-    const parameterId = formData.get('parameter_id');
-    
-    if (!parameterId) {
-        alert('Please select a parameter');
-        return;
-    }
-    
-    // Create configuration object with all fields
+function loadParameterConfig(paramId) {
+    currentParameterId = paramId;
+    const config = configuredParametersData[paramId] || {};
+    document.getElementById('parameter-config-form').style.display = 'block';
+    document.getElementById('current-parameter').value = paramId;
+    document.getElementById('operator').value = config.operator || '';
+    document.getElementById('value_manipulation').value = config.value_manipulation || 'no-change';
+    document.getElementById('min_value').value = config.min_value || '';
+    document.getElementById('max_value').value = config.max_value || '';
+    document.getElementById('resolution').value = config.resolution || '';
+    document.getElementById('resolution_value').value = config.resolution_value || '';
+    document.getElementById('fixed_value').value = config.fixed_value || '';
+    document.getElementById('enum_value').value = config.enum_value || '';
+    document.getElementById('value_tolerance').value = config.value_tolerance || '';
+    document.getElementById('value_tolerance_value').value = config.value_tolerance_value || '';
+    document.getElementById('value').value = config.value || '';
+    document.getElementById('expected_value').value = config.expected_value || '';
+    document.getElementById('min_accepted_value').value = config.min_accepted_value || '';
+    document.getElementById('max_accepted_value').value = config.max_accepted_value || '';
+}
+
+function saveParameterConfig() {
+    if (!currentParameterId) return;
     const config = {
-        parameter_id: parameterId,
-        operator: formData.get('operator'),
-        value_manipulation: formData.get('value_manipulation'),
-        value_options: formData.get('value_options'),
-        fixed_value: formData.get('fixed_value'),
-        min_value: formData.get('min_value'),
-        max_value: formData.get('max_value'),
-        resolution: formData.get('resolution'),
-        resolution_value: formData.get('resolution_value'),
-        enum_value: formData.get('enum_value'),
-        table_parameters: formData.get('table_parameters'),
-        value_tolerance: formData.get('value_tolerance'),
-        percentage: formData.get('percentage'),
-        value_tolerance_value: formData.get('value_tolerance_value'),
-        time_tolerance: formData.get('time_tolerance'),
-        time_to_reach_value: formData.get('time_to_reach_value'),
-        time_tolerance_value: formData.get('time_tolerance_value')
+        operator: document.getElementById('operator').value,
+        value_manipulation: document.getElementById('value_manipulation').value,
+        min_value: document.getElementById('min_value').value,
+        max_value: document.getElementById('max_value').value,
+        resolution: document.getElementById('resolution').value,
+        resolution_value: document.getElementById('resolution_value').value,
+        fixed_value: document.getElementById('fixed_value').value,
+        enum_value: document.getElementById('enum_value').value,
+        value_tolerance: document.getElementById('value_tolerance').value,
+        value_tolerance_value: document.getElementById('value_tolerance_value').value,
+        value: document.getElementById('value').value,
+        expected_value: document.getElementById('expected_value').value,
+        min_accepted_value: document.getElementById('min_accepted_value').value,
+        max_accepted_value: document.getElementById('max_accepted_value').value
     };
-    
-    // Store configuration
-    configuredParametersData[parameterId] = config;
-    configuredParameters = configuredParametersData; // Sync with modal's variable
-    
-    // Update display
-    updateParametersDisplay();
-    
-    // Close modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('parameterConfigModal'));
-    modal.hide();
-    
-    // Reset form
-    document.getElementById('parameter-config-form').reset();
-};
-
-// Override remove function
-window.removeParameterConfig = function(parameterId) {
-    if (confirm('Are you sure you want to remove this parameter configuration?')) {
-        delete configuredParametersData[parameterId];
-        delete configuredParameters[parameterId]; // Sync with modal's variable
-        updateParametersDisplay();
-    }
-};
-
-// Form submission handling
-document.getElementById('script-form').addEventListener('submit', function(e) {
-    // Ensure parameters JSON is up to date
+    configuredParametersData[currentParameterId] = config;
     document.getElementById('parameters_json').value = JSON.stringify(configuredParametersData);
-});
+}
 
-// Initialize on page load
+function removeParameterConfig() {
+    if (!currentParameterId) return;
+    delete configuredParametersData[currentParameterId];
+    const item = document.getElementById(`param-item-${currentParameterId}`);
+    if (item) item.remove();
+    currentParameterId = null;
+    const form = document.getElementById('parameter-config-form');
+    form.reset();
+    form.style.display = 'none';
+    if (!document.getElementById('parameters-list').children.length) {
+        document.getElementById('parameters-list').innerHTML = '<li class="list-group-item text-muted">No parameters added</li>';
+    }
+    document.getElementById('parameters_json').value = JSON.stringify(configuredParametersData);
+}
+
+function loadParametersForPacket(packetId) {
+    const select = document.getElementById('parameter-select');
+    select.innerHTML = '<option value="">-- Select Parameter --</option>';
+    if (packetId) {
+        const parameters = [
+            {id: 'param_1', name: 'Parameter 1'},
+            {id: 'param_2', name: 'Parameter 2'},
+            {id: 'param_3', name: 'Parameter 3'}
+        ];
+        parameters.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.name;
+            select.appendChild(opt);
+        });
+    }
+}
+
+function onPacketSelected() {
+    const packetId = document.getElementById('id_packet').value;
+    loadParametersForPacket(packetId);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if there are existing parameters to load
-    const existingParams = document.getElementById('parameters_json').value;
-    if (existingParams && existingParams !== '{}') {
+    document.getElementById('id_packet').addEventListener('change', onPacketSelected);
+    onPacketSelected();
+    const existing = document.getElementById('parameters_json').value;
+    if (existing && existing !== '{}') {
         try {
-            configuredParametersData = JSON.parse(existingParams);
-            configuredParameters = configuredParametersData;
-            updateParametersDisplay();
+            configuredParametersData = JSON.parse(existing);
+            const list = document.getElementById('parameters-list');
+            list.innerHTML = '';
+            Object.keys(configuredParametersData).forEach(paramId => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.id = `param-item-${paramId}`;
+                li.textContent = paramId;
+                li.onclick = () => loadParameterConfig(paramId);
+                list.appendChild(li);
+            });
+            if (!list.children.length) {
+                list.innerHTML = '<li class="list-group-item text-muted">No parameters added</li>';
+            }
         } catch (e) {
             console.error('Error parsing existing parameters:', e);
         }
     }
 });
+
+document.getElementById('script-form').addEventListener('submit', function() {
+    document.getElementById('parameters_json').value = JSON.stringify(configuredParametersData);
+});
 </script>
 
 <style>
-    #id_description {
-        height: 90px;
-    }
-    .btn-lg {
-        margin-left: 10px;
-    }
-    .list-group-item {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        margin-bottom: 5px;
-    }
+    #id_description { height: 90px; }
+    .btn-lg { margin-left: 10px; }
+    .list-group-item { cursor: pointer; }
 </style>

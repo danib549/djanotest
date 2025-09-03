@@ -76,34 +76,26 @@ SCRIPT_ERROR_BEHAVIOR = [
     ('retry', 'Retry'),
 ]
 
-# New Form: ParameterConfigForm (Used in the modal)
+# New Form: ParameterConfigForm
 class ParameterConfigForm(forms.Form):
     """Handles the configuration for a SINGLE parameter."""
     parameter_id = forms.ChoiceField(choices=[], label="Select Parameter", required=True)
-    
-    # Configuration fields matching ParameterConfig inputs
+
+    # Fields mirroring ParameterConfig class
     operator = forms.ChoiceField(choices=OPERATOR_CHOICES, label="Operator", required=False)
     value_manipulation = forms.ChoiceField(choices=VALUE_MANIPULATION_CHOICES, label="Value Manipulation", required=False)
-
-    # Value Options
-    value_options = forms.CharField(max_length=200, required=False, label="Value Options")
-    fixed_value = forms.FloatField(required=False, label="Fixed Value")
     min_value = forms.FloatField(required=False, label="Min Value")
     max_value = forms.FloatField(required=False, label="Max Value")
-    resolution = forms.ChoiceField(choices=TOLERANCE_TYPE_CHOICES, required=False, label="Resolution Type")
+    resolution = forms.ChoiceField(choices=TOLERANCE_TYPE_CHOICES, required=False, label="Resolution")
     resolution_value = forms.FloatField(required=False, label="Resolution Value")
+    fixed_value = forms.FloatField(required=False, label="Fixed Value")
     enum_value = forms.CharField(max_length=100, required=False, label="Enum Value")
-    table_parameters = forms.ChoiceField(choices=[], required=False, label="Table Parameters")
-
-    # Value Tolerance fields
     value_tolerance = forms.ChoiceField(choices=TOLERANCE_TYPE_CHOICES, label="Value Tolerance", required=False)
-    percentage = forms.FloatField(required=False, label="Percentage")
     value_tolerance_value = forms.FloatField(required=False, label="Value Tolerance Value")
-    
-    # Time Tolerance fields
-    time_tolerance = forms.ChoiceField(choices=TIME_TOLERANCE_CHOICES, label="Time Tolerance", required=False)
-    time_to_reach_value = forms.FloatField(required=False, label="Time to Reach Value")
-    time_tolerance_value = forms.FloatField(required=False, label="Time Tolerance Value")
+    value = forms.FloatField(required=False, label="Value")
+    expected_value = forms.FloatField(required=False, label="Expected Value")
+    min_accepted_value = forms.FloatField(required=False, label="Min Accepted Value")
+    max_accepted_value = forms.FloatField(required=False, label="Max Accepted Value")
 
     def __init__(self, *args, **kwargs):
         # packet_id is required to populate the parameter choices dynamically
